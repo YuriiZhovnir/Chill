@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Chill</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="sign_in_with_email">Sign up with Email</string>
+    <string name="pre_terms_slogan">By signing up to Chill you accept our</string>
+    <string name="terms">Terms of Use</string>
+    <string name="already_account">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="welcome">Welcome to Chill</string>
+    <string name="continue_label">Continue</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="facebook_app_id">217705585521766</string>
+</resources>
