@@ -1,5 +1,6 @@
 package jdroidcoder.ua.chill.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.activity.StartActivity
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Token
@@ -103,6 +105,8 @@ class StartFragment : BaseFragment(), FacebookCallback<LoginResult> {
                                 override fun onNext(response: Token) {
                                     Utils.saveToken(context, response.accessToken)
                                     ChillApp.token = response
+                                    startActivity(Intent(context, MainActivity::class.java))
+                                    activity.finish()
                                 }
 
                                 override fun onError(e: Throwable) {

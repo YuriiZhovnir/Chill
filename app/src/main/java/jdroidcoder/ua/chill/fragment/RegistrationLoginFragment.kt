@@ -1,5 +1,6 @@
 package jdroidcoder.ua.chill.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import butterknife.OnClick
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Token
 import jdroidcoder.ua.chill.util.Utils
@@ -79,6 +81,8 @@ class RegistrationLoginFragment : BaseFragment() {
                     override fun onNext(response: Token) {
                         Utils.saveToken(context, response.accessToken)
                         ChillApp.token = response
+                        startActivity(Intent(context, MainActivity::class.java))
+                        activity.finish()
                     }
 
                     override fun onError(e: Throwable) {
