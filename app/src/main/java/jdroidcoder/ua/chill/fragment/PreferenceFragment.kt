@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import butterknife.OnClick
+import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.adapter.PreferenceAdapter
@@ -41,6 +42,7 @@ class PreferenceFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        continueButton?.typeface = ChillApp.demiFont
         preferences.adapter = PreferenceAdapter(context, preference, this)
     }
 

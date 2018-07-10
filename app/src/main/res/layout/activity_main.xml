@@ -13,8 +13,73 @@
         android:src="@drawable/login_background" />
 
     <LinearLayout
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_home_icon"
+            android:gravity="center"
+            android:text="@string/home"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/sleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_sleep_icon"
+            android:gravity="center"
+            android:text="@string/sleep"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/meditate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_meditate_icon"
+            android:gravity="center"
+            android:text="@string/meditate"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_music_icon"
+            android:gravity="center"
+            android:text="@string/music"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_profiles_icon"
+            android:gravity="center"
+            android:text="@string/profile"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" />
+        android:layout_above="@id/bottom_menu"
+        android:orientation="horizontal"/>
 </RelativeLayout>
