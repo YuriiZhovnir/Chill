@@ -16,6 +16,7 @@ import android.graphics.Canvas
 import android.view.View
 import android.view.ViewTreeObserver
 import jdroidcoder.ua.chill.ChillApp
+import jdroidcoder.ua.chill.fragment.HomeFragment
 import jdroidcoder.ua.chill.util.BlurDrawable
 
 /**
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
                     ?.commit()
 
         }
+        val fragment = HomeFragment.newInstance()
+        supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, fragment)
+                ?.commit()
     }
 
     private fun applyBlur() {

@@ -3,6 +3,7 @@ package jdroidcoder.ua.chill.network
 import jdroidcoder.ua.chill.response.Token
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 import rx.Observable
 
@@ -34,4 +35,7 @@ interface ApiService {
     @POST("api/user/preferences/update")
     @FormUrlEncoded
     fun setPreferences(@Field("ids[]") ids: ArrayList<Int>): Observable<Object>
+
+    @GET("api/collections/home")
+    fun getHomeScreen(): Observable<Object>
 }
