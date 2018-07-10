@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.adapter.PreferenceAdapter
 import jdroidcoder.ua.chill.response.Preference
 import kotlinx.android.synthetic.main.fragment_preference.*
@@ -28,5 +29,14 @@ class PreferenceFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferences.adapter = PreferenceAdapter(context, arguments.getParcelableArrayList(PREFERENCES_KEY))
+    }
+
+    override fun onDestroyView() {
+        try {
+            (activity as MainActivity).removeBlur()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        super.onDestroyView()
     }
 }
