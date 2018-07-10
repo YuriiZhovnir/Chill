@@ -9,22 +9,27 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import jdroidcoder.ua.chill.R
-import jdroidcoder.ua.chill.response.Preference
+import jdroidcoder.ua.chill.fragment.PreferenceFragment
+import jdroidcoder.ua.chill.model.PreferenceModel
 
 /**
  * Created by jdroidcoder on 09.07.2018.
  */
-class PreferenceAdapter(var context: Context, var preferences: ArrayList<Preference>) : BaseAdapter() {
+class PreferenceAdapter(var context: Context, var preferences: ArrayList<PreferenceModel>,
+                        var fragment: PreferenceFragment) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.preference_item_style, parent, false)
-        view.findViewById<ImageView>(R.id.image).setImageResource(R.mipmap.ic_launcher)
+        view.findViewById<ImageView>(R.id.image).setImageResource(preferences?.get(position).imageId)
         view.findViewById<TextView>(R.id.name).text = preferences?.get(position)?.name
         val selector = view.findViewById<ImageView>(R.id.selectedIcon)
         view.findViewById<CardView>(R.id.view).setOnClickListener {
-            if (selector.visibility == View.GONE)
+            if (selector.visibility == View.GONE) {
+                fragment?.selectedIds.add(preferences?.get(position)?.id)
                 selector.visibility = View.VISIBLE
-            else
+            } else {
+                fragment?.selectedIds.remove(preferences?.get(position)?.id)
                 selector.visibility = View.GONE
+            }
         }
         return view
     }

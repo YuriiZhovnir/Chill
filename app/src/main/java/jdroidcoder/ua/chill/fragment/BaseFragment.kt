@@ -14,7 +14,6 @@ abstract class BaseFragment : Fragment() {
 
     companion object {
         const val IS_LOGIN_KEY="is_login"
-        const val PREFERENCES_KEY="preferences"
     }
 
     private var unbinder: Unbinder = Unbinder.EMPTY

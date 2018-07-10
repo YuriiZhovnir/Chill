@@ -1,10 +1,8 @@
 package jdroidcoder.ua.chill.network
 
-import jdroidcoder.ua.chill.response.Preference
 import jdroidcoder.ua.chill.response.Token
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 import rx.Observable
 
@@ -33,6 +31,7 @@ interface ApiService {
                @Field("password") password: String,
                @Field("email") email: String): Observable<Token>
 
-    @GET("api/list/preferences")
-    fun getPreferences(): Observable<ArrayList<Preference>>
+    @POST("api/user/preferences/update")
+    @FormUrlEncoded
+    fun setPreferences(@Field("ids[]") ids: ArrayList<Int>): Observable<Object>
 }
