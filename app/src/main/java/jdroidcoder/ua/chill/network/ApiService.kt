@@ -1,5 +1,6 @@
 package jdroidcoder.ua.chill.network
 
+import jdroidcoder.ua.chill.response.Home
 import jdroidcoder.ua.chill.response.Token
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -37,5 +38,5 @@ interface ApiService {
     fun setPreferences(@Field("ids[]") ids: ArrayList<Int>): Observable<Object>
 
     @GET("api/collections/home")
-    fun getHomeScreen(): Observable<Object>
+    fun getHomeScreen(): Observable<Home>
 }

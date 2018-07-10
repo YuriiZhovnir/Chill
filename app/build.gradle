@@ -19,6 +19,8 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -48,4 +50,6 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.android.support:design:26.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    compile 'com.github.mmin18:realtimeblurview:1.1.2'
 }

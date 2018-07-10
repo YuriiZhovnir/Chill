@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.fragment.HomeFragment
-import jdroidcoder.ua.chill.util.BlurDrawable
 
 /**
  * Created by jdroidcoder on 09.07.2018.
