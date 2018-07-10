@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
-import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.adapter.HomeAdapter
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Home
@@ -40,18 +39,18 @@ class HomeFragment : BaseFragment() {
                     override fun onNext(response: Home) {
                         recommendedList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         recommendedList?.adapter = HomeAdapter(response.recommendedArray
-                                ?: ArrayList(), activity as MainActivity)
-//                        if(response?.continueArray?.isEmpty()==true){
-//                            continueLabel?.text = resources?.getString(R.string.basic_label)
-//                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//                            continueList?.adapter = HomeAdapter(response.defaultArray
-//                                    ?: ArrayList())
-//                        }else{
-//                            continueLabel?.text = resources?.getString(R.string.continue_meditating_label)
-//                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//                            continueList?.adapter = HomeAdapter(response.continueArray
-//                                    ?: ArrayList())
-//                        }
+                                ?: ArrayList())
+                        if (response?.continueArray?.isEmpty() == true) {
+                            continueLabel?.text = resources?.getString(R.string.basic_label)
+                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            continueList?.adapter = HomeAdapter(response.defaultArray
+                                    ?: ArrayList())
+                        } else {
+                            continueLabel?.text = resources?.getString(R.string.continue_meditating_label)
+                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            continueList?.adapter = HomeAdapter(response.continueArray
+                                    ?: ArrayList())
+                        }
                     }
 
                     override fun onError(e: Throwable) {

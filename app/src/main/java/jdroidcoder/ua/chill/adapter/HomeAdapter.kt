@@ -8,16 +8,15 @@ import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
-import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.response.CollectionItem
 import kotlinx.android.synthetic.main.home_item_style.view.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * Created by jdroidcoder on 10.07.2018.
  */
-class HomeAdapter(var items: ArrayList<CollectionItem>, var activity: MainActivity) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(var items: ArrayList<CollectionItem>) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     private var context: Context? = null
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         context = parent?.context
         return ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.home_item_style, parent, false))
@@ -29,7 +28,7 @@ class HomeAdapter(var items: ArrayList<CollectionItem>, var activity: MainActivi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items?.get(position)
-        Picasso.get().load(item.previewPhotoUrl).into(holder.image)
+        Picasso.with(context).load(item.previewPhotoUrl).resizeDimen(R.dimen.size_160_dp, R.dimen.size_120_dp).into(holder.image)
         holder.title.typeface = ChillApp.demiFont
         holder.title.text = item.title
         holder.description.text = item.coverText
