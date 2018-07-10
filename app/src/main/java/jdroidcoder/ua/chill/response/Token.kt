@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by jdroidcoder on 09.07.2018.
  */
-data class Token(@SerializedName("token_type") var tokenType: String,
-            @SerializedName("access_token") var accessToken: String,
+data class Token(@SerializedName("access_token") var accessToken: String?,
             @SerializedName("is_subscribed") var isSubscribed: Int = 0) {
 
     public fun getIsSubscribed(): Boolean {
