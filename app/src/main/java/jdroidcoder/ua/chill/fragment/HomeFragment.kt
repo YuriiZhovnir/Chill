@@ -9,6 +9,7 @@ import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.adapter.HomeAdapter
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
+import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Home
 import kotlinx.android.synthetic.main.fragment_home.*
 import rx.android.schedulers.AndroidSchedulers
@@ -19,6 +20,10 @@ import rx.schedulers.Schedulers
  */
 class HomeFragment : BaseFragment() {
     companion object {
+        val recommendedItems = ArrayList<CollectionItem>()
+        val defaultItems = ArrayList<CollectionItem>()
+        val continueItems = ArrayList<CollectionItem>()
+
         fun newInstance() = HomeFragment()
     }
 
@@ -31,31 +36,45 @@ class HomeFragment : BaseFragment() {
         title?.typeface = ChillApp.billabongFont
         continueLabel?.typeface = ChillApp.demiFont
         recommendedLabel?.typeface = ChillApp.demiFont
+        if (recommendedItems.isEmpty() && (continueItems.isEmpty() || defaultItems.isEmpty())) {
+            loadHomeScreen()
+        } else {
+            setDate(recommendedItems, continueItems, defaultItems)
+        }
+    }
+
+    private fun loadHomeScreen() {
         apiService.getHomeScreen()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(object : RetrofitSubscriber<Home>() {
                     override fun onNext(response: Home) {
-                        recommendedList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        recommendedList?.adapter = HomeAdapter(response.recommendedArray
-                                ?: ArrayList())
-                        if (response?.continueArray?.isEmpty() == true) {
-                            continueLabel?.text = resources?.getString(R.string.basic_label)
-                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            continueList?.adapter = HomeAdapter(response.defaultArray
-                                    ?: ArrayList())
-                        } else {
-                            continueLabel?.text = resources?.getString(R.string.continue_meditating_label)
-                            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            continueList?.adapter = HomeAdapter(response.continueArray
-                                    ?: ArrayList())
-                        }
+                        response.recommendedArray?.let { recommendedItems.addAll(it) }
+                        response.defaultArray?.let { defaultItems.addAll(it) }
+                        response.continueArray?.let { continueItems.addAll(it) }
+                        setDate(recommendedItems, continueItems, defaultItems)
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
                     }
                 })
+    }
+
+    private fun setDate(recommendedItems: ArrayList<CollectionItem>,
+                        continueItems: ArrayList<CollectionItem>,
+                        defaultItems: ArrayList<CollectionItem>) {
+        recommendedList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recommendedList?.adapter = HomeAdapter(recommendedItems)
+        if (continueItems.isEmpty()) {
+            continueLabel?.text = resources?.getString(R.string.basic_label)
+            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            continueList?.adapter = HomeAdapter(defaultItems)
+        } else {
+            continueLabel?.text = resources?.getString(R.string.continue_meditating_label)
+            continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            continueList?.adapter = HomeAdapter(continueItems)
+        }
     }
 }

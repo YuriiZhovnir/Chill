@@ -1,5 +1,6 @@
 package jdroidcoder.ua.chill.network
 
+import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.Home
 import jdroidcoder.ua.chill.response.Token
 import retrofit2.http.Field
@@ -39,4 +40,7 @@ interface ApiService {
 
     @GET("api/collections/home")
     fun getHomeScreen(): Observable<Home>
+
+    @GET("api/list/categories")
+    fun getCategories(): Observable<ArrayList<Category>>
 }

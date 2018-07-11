@@ -15,8 +15,16 @@ import android.annotation.TargetApi
 import android.graphics.Canvas
 import android.view.View
 import android.view.ViewTreeObserver
+import butterknife.ButterKnife
+import butterknife.OnClick
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.fragment.HomeFragment
+import jdroidcoder.ua.chill.fragment.SleepFragment
+import jdroidcoder.ua.chill.network.RetrofitConfig
+import jdroidcoder.ua.chill.network.RetrofitSubscriber
+import jdroidcoder.ua.chill.response.Category
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by jdroidcoder on 09.07.2018.
@@ -26,6 +34,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ButterKnife.bind(this)
+        RetrofitConfig().adapter.getCategories()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(object : RetrofitSubscriber<ArrayList<Category>>() {
+                    override fun onNext(response: ArrayList<Category>) {
+                        ChillApp.category = response
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
         if (ChillApp.token?.getIsRegistration() == true) {
             applyBlur()
             val fragment = PreferenceFragment.newInstance()
@@ -35,7 +57,20 @@ class MainActivity : AppCompatActivity() {
                     ?.commit()
 
         }
+        home()
+    }
+
+    @OnClick(R.id.home)
+    fun home() {
         val fragment = HomeFragment.newInstance()
+        supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, fragment)
+                ?.commit()
+    }
+
+    @OnClick(R.id.sleep)
+    fun sleep() {
+        val fragment = ChillApp.category?.first { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()
