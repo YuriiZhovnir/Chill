@@ -32,15 +32,30 @@ class SleepFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         category = arguments?.getSerializable(SLEEP_CATEGORY_KEY) as Category?
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
-        category?.subcategories?.get(0)?.name?.let { viewPagerAdapter.addFragment(Fragment(), it) }
-        category?.subcategories?.get(1)?.name?.let { viewPagerAdapter.addFragment(Fragment(), it) }
-        category?.subcategories?.get(2)?.name?.let { viewPagerAdapter.addFragment(Fragment(), it) }
+        category?.id?.let {
+            CollectionFragment.newInstance(it, RESOURCE_CATEGORY)
+        }?.let {
+            viewPagerAdapter.addFragment(it, resources.getString(R.string.all_label))
+        }
+        category?.subcategories?.let {
+            for (subcategory in it) {
+                subcategory?.let { it1 ->
+                    it1?.id?.let { it2 ->
+                        CollectionFragment.newInstance(it2, RESOURCE_SUBCATEGORY)
+                    }
+                }?.let { it2 ->
+                    subcategory?.name?.let { it1 ->
+                        viewPagerAdapter.addFragment(it2, it1)
+                    }
+                }
+            }
+        }
         viewPager.adapter = viewPagerAdapter
         tabs.setupWithViewPager(viewPager)
         for (i in 0 until tabs.tabCount) {
             val tab = (tabs.getChildAt(0) as ViewGroup).getChildAt(i)
             val p = tab.layoutParams as ViewGroup.MarginLayoutParams
-            p.setMargins(0, 0, 50, 0)
+            p.setMargins(0, 0, 20, 0)
             tab.requestLayout()
         }
     }

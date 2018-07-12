@@ -13,8 +13,14 @@ import jdroidcoder.ua.chill.network.RetrofitConfig
 abstract class BaseFragment : Fragment() {
 
     companion object {
-        const val IS_LOGIN_KEY="is_login"
-        const val SLEEP_CATEGORY_KEY="sleep_category"
+        const val IS_LOGIN_KEY = "is_login"
+        const val SLEEP_CATEGORY_KEY = "sleep_category"
+        const val SUBCATEGORY_ID_KEY = "subcategory_id"
+        const val RESOURCE_KEY = "resource"
+
+        const val RESOURCE_CATEGORY = "category"
+        const val RESOURCE_SUBCATEGORY = "subcategory"
+        const val RESOURCE_FAVORITE = "favorite"
     }
 
     private var unbinder: Unbinder = Unbinder.EMPTY

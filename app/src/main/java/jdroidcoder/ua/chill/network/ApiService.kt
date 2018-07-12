@@ -1,12 +1,10 @@
 package jdroidcoder.ua.chill.network
 
 import jdroidcoder.ua.chill.response.Category
+import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Home
 import jdroidcoder.ua.chill.response.Token
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import rx.Observable
 
 /**
@@ -43,4 +41,12 @@ interface ApiService {
 
     @GET("api/list/categories")
     fun getCategories(): Observable<ArrayList<Category>>
+
+    @GET("api/collections/category/{category_id}")
+    fun getCollectionFromCategory(@Path("category_id") categoryId: Int,
+                                  @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
+
+    @GET("api/collections/subcategory/{subcategory_id}")
+    fun getCollectionFromSubategory(@Path("subcategory_id") subcategoryId: Int,
+                                    @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
 }
