@@ -18,7 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="@string/sleep"
+        android:text="@string/meditate"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 
@@ -32,25 +32,12 @@
         android:layout_marginTop="10dp"
         android:src="@android:color/white" />
 
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/sleep_subtitle"
-        android:textColor="@android:color/white" />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         style="@style/AppTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subtitle"
+        android:layout_below="@id/line"
         android:layout_marginTop="10dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp" />

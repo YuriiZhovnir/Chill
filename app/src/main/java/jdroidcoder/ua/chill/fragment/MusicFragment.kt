@@ -17,7 +17,7 @@ class MusicFragment : BaseFragment() {
     companion object {
         fun newInstance(category: Category) = MusicFragment().apply {
             arguments = Bundle(1).apply {
-                putSerializable(SLEEP_CATEGORY_KEY, category)
+                putSerializable(CATEGORY_KEY, category)
             }
         }
     }
@@ -30,7 +30,7 @@ class MusicFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        category = arguments?.getSerializable(SLEEP_CATEGORY_KEY) as Category?
+        category = arguments?.getSerializable(CATEGORY_KEY) as Category?
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
         category?.id?.let {
             CollectionFragment.newInstance(it, RESOURCE_CATEGORY)

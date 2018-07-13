@@ -3,7 +3,6 @@ package jdroidcoder.ua.chill.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import jdroidcoder.ua.chill.R
-import jdroidcoder.ua.chill.fragment.PreferenceFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import android.graphics.drawable.BitmapDrawable
 import android.renderscript.ScriptIntrinsicBlur
@@ -18,9 +17,7 @@ import android.view.ViewTreeObserver
 import butterknife.ButterKnife
 import butterknife.OnClick
 import jdroidcoder.ua.chill.ChillApp
-import jdroidcoder.ua.chill.fragment.HomeFragment
-import jdroidcoder.ua.chill.fragment.MusicFragment
-import jdroidcoder.ua.chill.fragment.SleepFragment
+import jdroidcoder.ua.chill.fragment.*
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
@@ -72,6 +69,14 @@ class MainActivity : AppCompatActivity() {
     @OnClick(R.id.sleep)
     fun sleep() {
         val fragment = ChillApp.category?.first { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
+        supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, fragment)
+                ?.commit()
+    }
+
+    @OnClick(R.id.meditate)
+    fun meditate() {
+        val fragment = ChillApp.category?.first { p -> p.name == "Meditations" }?.let { MeditateFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()

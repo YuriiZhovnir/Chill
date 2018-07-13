@@ -1,7 +1,6 @@
 package jdroidcoder.ua.chill.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,9 @@ import kotlinx.android.synthetic.main.fragment_sleep.*
 /**
  * Created by jdroidcoder on 11.07.2018.
  */
-class SleepFragment : BaseFragment() {
+class MeditateFragment : BaseFragment() {
     companion object {
-        fun newInstance(category: Category) = SleepFragment().apply {
+        fun newInstance(category: Category) = MeditateFragment().apply {
             arguments = Bundle(1).apply {
                 putSerializable(CATEGORY_KEY, category)
             }
@@ -25,7 +24,7 @@ class SleepFragment : BaseFragment() {
     private var category: Category? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_sleep, container, false)
+        return inflater?.inflate(R.layout.fragment_meditate, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

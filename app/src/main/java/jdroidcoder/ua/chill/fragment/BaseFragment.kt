@@ -14,7 +14,7 @@ abstract class BaseFragment : Fragment() {
 
     companion object {
         const val IS_LOGIN_KEY = "is_login"
-        const val SLEEP_CATEGORY_KEY = "sleep_category"
+        const val CATEGORY_KEY = "sleep_category"
         const val SUBCATEGORY_ID_KEY = "subcategory_id"
         const val RESOURCE_KEY = "resource"
 
