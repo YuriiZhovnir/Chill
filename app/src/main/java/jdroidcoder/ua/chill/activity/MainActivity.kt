@@ -19,6 +19,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.fragment.HomeFragment
+import jdroidcoder.ua.chill.fragment.MusicFragment
 import jdroidcoder.ua.chill.fragment.SleepFragment
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
@@ -71,6 +72,14 @@ class MainActivity : AppCompatActivity() {
     @OnClick(R.id.sleep)
     fun sleep() {
         val fragment = ChillApp.category?.first { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
+        supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, fragment)
+                ?.commit()
+    }
+
+    @OnClick(R.id.music)
+    fun music() {
+        val fragment = ChillApp.category?.first { p -> p.name == "Music" }?.let { MusicFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()

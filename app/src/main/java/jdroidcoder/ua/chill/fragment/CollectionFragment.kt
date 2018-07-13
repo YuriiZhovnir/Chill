@@ -53,7 +53,7 @@ class CollectionFragment : BaseFragment() {
     private fun load(page: Int) {
         val request = when (resource) {
             RESOURCE_CATEGORY -> id?.let { apiService.getCollectionFromCategory(it, page) }
-            RESOURCE_FAVORITE -> id?.let { apiService.getCollectionFromCategory(it, page) }
+            RESOURCE_FAVORITE -> id?.let { apiService.getFavorite(it, page) }
             else -> id?.let { apiService.getCollectionFromSubategory(it, page) }
         }
 
