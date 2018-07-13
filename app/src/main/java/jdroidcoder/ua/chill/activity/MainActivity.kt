@@ -12,26 +12,40 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.annotation.TargetApi
 import android.graphics.Canvas
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.CountDownTimer
 import android.view.View
 import android.view.ViewTreeObserver
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
+import jdroidcoder.ua.chill.event.PlayAudio
 import jdroidcoder.ua.chill.fragment.*
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by jdroidcoder on 09.07.2018.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
+
+    private var player: MediaPlayer? = null
+    private var timer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        EventBus.getDefault().register(this)
         ButterKnife.bind(this)
         RetrofitConfig().adapter.getCategories()
                 .subscribeOn(Schedulers.io())
@@ -55,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                     ?.commit()
 
         }
+        audioName?.typeface = ChillApp?.demiFont
         home()
     }
 
@@ -90,6 +105,70 @@ class MainActivity : AppCompatActivity() {
                 ?.commit()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun playAudio(playAudio: PlayAudio) {
+        if (player != null && player?.isPlaying == true) {
+            player?.stop()
+        }
+        playerView?.visibility = View.VISIBLE
+        Picasso.with(this)
+                .load(playAudio?.collectionItem?.previewPhotoUrl).resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
+                .into(audioImage)
+        audioName?.text = playAudio?.collectionItem?.collectionItems?.get(0)?.title
+        authorName?.text = playAudio?.collectionItem?.authors?.get(0).fullName
+        button?.setImageResource(R.drawable.ic_pause_black_24dp)
+        player = MediaPlayer()
+        player?.setDataSource(applicationContext, Uri.parse(playAudio?.collectionItem?.collectionItems?.get(0)?.audioUrl))
+        player?.prepare()
+        player?.start()
+        player?.setOnPreparedListener(this)
+    }
+
+    override fun onPrepared(mMediaPlayer: MediaPlayer?) {
+        val duration = mMediaPlayer?.duration
+        progress?.max = duration ?: 100
+        if (timer != null) {
+            timer?.cancel()
+        }
+        duration?.toLong()?.let { setTimer(it) }
+    }
+
+    private fun setTimer(duration: Long) {
+        timer = object : CountDownTimer(duration, 1000) {
+            override fun onFinish() {
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                val temp = player?.currentPosition?.toLong()
+                if (temp != null) {
+                    progress?.progress = temp?.toInt()
+                    playTime?.text = String.format("%02d:%02d",
+                            TimeUnit.MILLISECONDS.toMinutes(temp) -
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(temp)),
+                            TimeUnit.MILLISECONDS.toSeconds(temp) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(temp)))
+                }
+            }
+
+        }
+        timer?.start()
+    }
+
+    @OnClick(R.id.button)
+    fun button() {
+        if (timer != null) {
+            timer?.cancel()
+        }
+        if (player != null && player?.isPlaying == true) {
+            button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+            player?.pause()
+        } else {
+            player?.duration?.toLong()?.let { setTimer(it) }
+            button?.setImageResource(R.drawable.ic_pause_black_24dp)
+            player?.start()
+        }
+    }
+
     private fun applyBlur() {
         image.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
@@ -123,5 +202,10 @@ class MainActivity : AppCompatActivity() {
 
     fun removeBlur() {
         container?.background = null
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 }

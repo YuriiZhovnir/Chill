@@ -50,7 +50,10 @@ interface ApiService {
     fun getCollectionFromSubategory(@Path("subcategory_id") subcategoryId: Int,
                                     @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
 
-    @GET("/api/collections/category/{category_id}/favorite")
-    fun getFavorite(@Path("category_id") subcategoryId: Int,
+    @GET("api/collections/category/{category_id}/favorite")
+    fun getFavorite(@Path("category_id") categoryId: Int,
                                     @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
+
+    @GET("api/collection/{collection_id}")
+    fun getCollection(@Path("collection_id") collectionId: Int): Observable<CollectionItem>
 }

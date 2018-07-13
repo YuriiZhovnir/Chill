@@ -15,7 +15,9 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
                           @SerializedName("is_free") var isFree: Int?,
                           @SerializedName("is_favorite") var isFavorite: Int?,
                           @SerializedName("ended_count") var endedCount: Int?,
-                          @SerializedName("is_new") var isNew: Int?) {
+                          @SerializedName("is_new") var isNew: Int?,
+                          @SerializedName("authors") var authors: ArrayList<Author>,
+                          @SerializedName("collection_items") var collectionItems: ArrayList<CollectionData>) {
     fun isFree(): Boolean {
         return isFree == 0
     }

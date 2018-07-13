@@ -1,6 +1,7 @@
 package jdroidcoder.ua.chill.adapter
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +10,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.event.PlayAudio
+import jdroidcoder.ua.chill.network.RetrofitConfig
+import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
+import org.greenrobot.eventbus.EventBus
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by jdroidcoder on 11.07.2018.
  */
 class GridAdapter(var context: Context, private var collections: ArrayList<CollectionItem>) : BaseAdapter() {
 
-    fun addItems(items:ArrayList<CollectionItem>){
+    fun addItems(items: ArrayList<CollectionItem>) {
         this.collections.addAll(items)
         notifyDataSetChanged()
     }
@@ -37,6 +44,23 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
             view.findViewById<TextView>(R.id.newLabel).visibility = View.VISIBLE
         } else {
             view.findViewById<TextView>(R.id.newLabel).visibility = View.GONE
+        }
+        view.setOnClickListener {
+            collection.id?.let { it1 ->
+                RetrofitConfig().adapter.getCollection(it1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(object : RetrofitSubscriber<CollectionItem>() {
+                            override fun onNext(response: CollectionItem) {
+                                EventBus.getDefault().post(PlayAudio(response))
+                            }
+
+                            override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                            }
+                        })
+            }
         }
         return view
     }

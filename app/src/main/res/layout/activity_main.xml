@@ -20,20 +20,21 @@
         android:orientation="horizontal" />
 
     <RelativeLayout
+        android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:alpha="0.4"
             android:background="@android:color/black" />
 
         <LinearLayout
-            android:id="@+id/bottom_menu"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:paddingBottom="5dp">
 
@@ -93,4 +94,89 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@id/bottom_menu"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/progress"
+            android:layout_marginTop="-8dp"
+            android:alpha="0.4"
+            android:background="@android:color/black" />
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumbTint="#3297FF" />
+
+        <ImageView
+            android:id="@+id/audioImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/progress"
+            android:layout_marginTop="-5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_play_arrow_black_24dp" />
+
+        <TextView
+            android:id="@+id/playTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/button"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/audioName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/audioImage"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/audioImage"
+            android:layout_toStartOf="@id/playTime"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/authorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/audioName"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@id/audioImage"
+            android:layout_toStartOf="@id/playTime"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
 </RelativeLayout>
