@@ -52,8 +52,14 @@ interface ApiService {
 
     @GET("api/collections/category/{category_id}/favorite")
     fun getFavorite(@Path("category_id") categoryId: Int,
-                                    @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
+                    @Query("page") page: Int): Observable<ArrayList<CollectionItem>>
 
     @GET("api/collection/{collection_id}")
     fun getCollection(@Path("collection_id") collectionId: Int): Observable<CollectionItem>
+
+    @POST("api/collection/{collection_id}/favorite/add")
+    fun addToFavorite(@Path("collection_id") collectionId: Int): Observable<Object>
+
+    @POST("api/collection/{collection_id}/favorite/remove")
+    fun removeToFavorite(@Path("collection_id") collectionId: Int): Observable<Object>
 }

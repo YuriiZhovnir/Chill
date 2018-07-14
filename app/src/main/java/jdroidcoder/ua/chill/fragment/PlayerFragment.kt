@@ -12,9 +12,12 @@ import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.event.ContinuePlay
+import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
 import kotlinx.android.synthetic.main.fragment_palyer.*
 import org.greenrobot.eventbus.EventBus
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by jdroidcoder on 14.07.2018.
@@ -30,6 +33,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
 
     private var player: MediaPlayer? = null
     private var timer: CountDownTimer? = null
+    private var collection: CollectionItem? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_palyer, container, false)
@@ -37,11 +41,11 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
-        Picasso.with(context).load(collection.backgroundPhotoUrl).into(background)
-        title.text = collection.collectionItems?.get(0).title
-        author.text = "${collection.authors?.get(0).position?.name}: ${collection.authors?.get(0).fullName}"
-        if (collection.isFavorite()) {
+        collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
+        Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+        title.text = collection?.collectionItems?.get(0)?.title
+        author.text = "${collection?.authors?.get(0)?.position?.name}: ${collection?.authors?.get(0)?.fullName}"
+        if (collection?.isFavorite() == true) {
             favoriteIcon.setImageResource(R.drawable.ic_favorite_black_24dp)
         } else {
             favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp)
@@ -114,6 +118,33 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
     @OnClick(R.id.close)
     fun close() {
         activity?.supportFragmentManager?.popBackStack()
+    }
+
+    @OnClick(R.id.favorite)
+    fun favorite() {
+        val request = if (collection?.isFavorite() == true) {
+            collection?.id?.let { apiService?.removeToFavorite(it) }
+        } else {
+            collection?.id?.let { apiService?.addToFavorite(it) }
+        }
+        request?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.unsubscribeOn(Schedulers.io())
+                ?.subscribe(object : RetrofitSubscriber<Object>() {
+                    override fun onNext(response: Object) {
+                        if (collection?.isFavorite() == true) {
+                            collection?.isFavorite = 0
+                            favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+                        } else {
+                            collection?.isFavorite = 1
+                            favoriteIcon.setImageResource(R.drawable.ic_favorite_black_24dp)
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
     }
 
     override fun onDestroyView() {
