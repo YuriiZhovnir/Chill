@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/login_background" />
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -26,15 +26,16 @@
         android:layout_marginStart="30dp"
         android:gravity="center"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/player_controls"
-        android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
         android:gravity="center"
         android:textColor="#FFFFFF"
@@ -78,7 +79,7 @@
                 android:src="@drawable/progress_bar_background" />
 
             <ProgressBar
-                android:id="@+id/circularProgressbar"
+                android:id="@+id/progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -89,6 +90,7 @@
                 android:secondaryProgress="100" />
 
             <ImageView
+                android:id="@+id/button"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_centerInParent="true"
@@ -109,8 +111,9 @@
                 android:src="@drawable/progress_bar_background" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_fast_rewind_black_24dp" />
         </RelativeLayout>
@@ -129,8 +132,9 @@
                 android:src="@drawable/progress_bar_background" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_fast_forward_black_24dp" />
         </RelativeLayout>
@@ -151,8 +155,9 @@
                 android:src="@drawable/progress_bar_background" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_favorite_border_black_24dp" />
         </RelativeLayout>
@@ -172,8 +177,10 @@
                 android:src="@drawable/progress_bar_background" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:id="@+id/favoriteIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_favorite_border_black_24dp" />
         </RelativeLayout>

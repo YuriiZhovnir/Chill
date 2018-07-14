@@ -17,6 +17,7 @@ abstract class BaseFragment : Fragment() {
         const val CATEGORY_KEY = "sleep_category"
         const val SUBCATEGORY_ID_KEY = "subcategory_id"
         const val RESOURCE_KEY = "resource"
+        const val COLLECTION_KEY = "collection"
 
         const val RESOURCE_CATEGORY = "category"
         const val RESOURCE_SUBCATEGORY = "subcategory"

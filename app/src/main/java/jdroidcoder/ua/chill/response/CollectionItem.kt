@@ -1,6 +1,7 @@
 package jdroidcoder.ua.chill.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Created by jdroidcoder on 10.07.2018.
@@ -17,7 +18,11 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
                           @SerializedName("ended_count") var endedCount: Int?,
                           @SerializedName("is_new") var isNew: Int?,
                           @SerializedName("authors") var authors: ArrayList<Author>,
-                          @SerializedName("collection_items") var collectionItems: ArrayList<CollectionData>) {
+                          @SerializedName("collection_items") var collectionItems: ArrayList<CollectionData>) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 7L
+    }
+
     fun isFree(): Boolean {
         return isFree == 0
     }
