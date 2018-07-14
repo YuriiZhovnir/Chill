@@ -26,4 +26,6 @@
     <string name="all_label">All</string>
     <string name="sleep_subtitle">Enjoy a peaceful and deep sleep with these guided meditations.</string>
     <string name="my">My</string>
+    <string name="day_label">Day %d</string>
+    <string name="min_label">%d min</string>
 </resources>

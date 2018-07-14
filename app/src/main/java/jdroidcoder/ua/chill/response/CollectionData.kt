@@ -9,7 +9,7 @@ import java.io.Serializable
 data class CollectionData(@SerializedName("id")var id:Int?,
                           @SerializedName("collection_id")var collectionId:Int?,
                           @SerializedName("title")var title:String?,
-                          @SerializedName("number")var number:Int?,
+                          @SerializedName("number")var number:Int,
                           @SerializedName("audio_url")var audioUrl:String?,
                           @SerializedName("audio_duration")var audioDuration:Int?):Serializable{
     companion object {

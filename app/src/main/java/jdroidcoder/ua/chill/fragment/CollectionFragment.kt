@@ -19,10 +19,11 @@ import rx.schedulers.Schedulers
  */
 class CollectionFragment : BaseFragment() {
     companion object {
-        fun newInstance(subcategoryId: Int, resourcesKey: String) = CollectionFragment().apply {
+        fun newInstance(subcategoryId: Int, resourcesKey: String, isMeditation: Boolean = false) = CollectionFragment().apply {
             arguments = Bundle(2).apply {
                 putInt(SUBCATEGORY_ID_KEY, subcategoryId)
                 putString(RESOURCE_KEY, resourcesKey)
+                putBoolean(IS_MEDITATION_KEY, isMeditation)
             }
         }
     }
@@ -39,7 +40,7 @@ class CollectionFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         resource = arguments?.getString(RESOURCE_KEY)
         id = arguments?.getInt(SUBCATEGORY_ID_KEY, 0)
-        adapder = GridAdapter(context, ArrayList())
+        adapder = arguments?.getBoolean(IS_MEDITATION_KEY, false)?.let { GridAdapter(context, ArrayList(), it) }
         gridView?.adapter = adapder
         load(1)
         gridView?.setOnScrollListener(object : EndlessScrollListener() {
