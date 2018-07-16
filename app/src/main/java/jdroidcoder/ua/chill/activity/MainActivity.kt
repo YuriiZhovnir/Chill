@@ -77,6 +77,11 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         }
         audioName?.typeface = ChillApp?.demiFont
         home()
+        val fragment = MeditationCompletedFragment.newInstance()
+        supportFragmentManager?.beginTransaction()
+                ?.replace(android.R.id.content, fragment)
+                ?.addToBackStack(fragment.tag)
+                ?.commit()
     }
 
     @OnClick(R.id.home)

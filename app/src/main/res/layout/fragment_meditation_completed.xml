@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/empty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="10dp"
+        app:realtimeOverlayColor="#c8161616" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_close_black_24dp" />
+
+            <TextView
+                android:id="@+id/youDidIt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:drawablePadding="10dp"
+                android:drawableTop="@drawable/ic_party"
+                android:text="@string/you_did_it"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="20dp">
+
+                <com.github.mmin18.widget.RealtimeBlurView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:realtimeBlurRadius="10dp"
+                    app:realtimeOverlayColor="#cd363535" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mindful"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_sun"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/mindful_days"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/current"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_fire_blue"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/current_streak"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/longest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_fire_red"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/longest_streak"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp">
+
+                <com.github.mmin18.widget.RealtimeBlurView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:realtimeBlurRadius="10dp"
+                    app:realtimeOverlayColor="#cd363535" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="@dimen/size_60_dp"
+                    android:layout_height="@dimen/size_60_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/image"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/title"
+                    android:background="@android:color/transparent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_favorite_with_background"
+                        android:gravity="center"
+                        android:text="@string/favorite_label"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_download_with_background"
+                        android:gravity="center"
+                        android:text="@string/download_label"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_share_with_background"
+                        android:gravity="center"
+                        android:text="@string/share_label"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="20dp">
+
+                <com.github.mmin18.widget.RealtimeBlurView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:realtimeBlurRadius="10dp"
+                    app:realtimeOverlayColor="#cd363535" />
+
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/rate_label"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <RatingBar
+                    android:id="@+id/serviceRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:maxHeight="24dp"
+                    android:minHeight="24dp"
+                    android:numStars="5"
+                    android:progressDrawable="@drawable/star_half"
+                    android:stepSize="1" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

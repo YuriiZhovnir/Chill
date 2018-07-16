@@ -28,4 +28,12 @@
     <string name="my">My</string>
     <string name="day_label">Day %d</string>
     <string name="min_label">%d min</string>
+    <string name="you_did_it">You did it!</string>
+    <string name="mindful_days">Mindful days</string>
+    <string name="current_streak">Current Streak</string>
+    <string name="longest_streak">Longest Streak</string>
+    <string name="favorite_label">Favorite</string>
+    <string name="download_label">Download</string>
+    <string name="share_label">Share</string>
+    <string name="rate_label">Rate the guidance in this session</string>
 </resources>
