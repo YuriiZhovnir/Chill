@@ -19,6 +19,7 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
                           @SerializedName("is_new") var isNew: Int?,
                           @SerializedName("is_meditation") var isMeditation: Int?,
                           @SerializedName("authors") var authors: ArrayList<Author>,
+                          var selectedDay: CollectionData?,
                           @SerializedName("collection_items") var collectionItems: ArrayList<CollectionData>) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 7L

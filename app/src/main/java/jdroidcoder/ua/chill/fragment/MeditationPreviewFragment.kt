@@ -20,6 +20,7 @@ import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import android.view.Gravity
 import android.widget.FrameLayout
+import jdroidcoder.ua.chill.response.CollectionData
 
 
 /**
@@ -64,6 +65,17 @@ class MeditationPreviewFragment : BaseFragment() {
                     textView?.setTextColor(Color.parseColor("#000000"))
                 }
                 textView?.text = day?.number?.toString()
+                tempView?.setOnClickListener {
+                    if (day.number <= collection?.endedCount ?: 1) {
+                        currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, day?.number) }
+                        duration?.text = resources?.getString(R.string.min_label)?.let {
+                            String.format(it, day?.audioDuration?.toLong()?.let { it1 ->
+                                TimeUnit.SECONDS.toMinutes(it1)
+                            })
+                        }
+                        collection?.selectedDay = day
+                    }
+                }
                 days.addView(tempView)
             }
         }
@@ -79,6 +91,7 @@ class MeditationPreviewFragment : BaseFragment() {
             }
         })
         val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+        collection?.selectedDay = currentData
         currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
         duration?.text = resources?.getString(R.string.min_label)?.let {
             String.format(it, currentData?.audioDuration?.toLong()?.let { it1 ->

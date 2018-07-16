@@ -55,10 +55,10 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
             title.text = collection?.collectionItems?.get(0)?.title
         } else {
             author?.visibility = View.GONE
-            val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+            val currentData = collection?.selectedDay
             currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
             titleMeditation?.text = collection?.title
-            title?.text = collection?.collectionItems?.get(0)?.title
+            title?.text = collection?.selectedDay?.title
             music?.visibility = View.VISIBLE
             val ll = favorite?.layoutParams as RelativeLayout.LayoutParams
             ll.addRule(RelativeLayout.ALIGN_RIGHT, mainButton.id)
@@ -74,8 +74,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
             player?.setDataSource(activity?.applicationContext, if (collection?.isMeditation() == false) {
                 Uri.parse(collection?.collectionItems?.get(0)?.audioUrl)
             } else {
-                val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
-                Uri.parse(currentData?.audioUrl)
+                Uri.parse(collection?.selectedDay?.audioUrl)
             })
             player?.prepare()
             player?.setOnPreparedListener(this)
