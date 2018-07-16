@@ -102,6 +102,21 @@ class MeditationPreviewFragment : BaseFragment() {
 
     @OnClick(R.id.button)
     fun button() {
+        collection?.let { HomeFragment?.continueItems?.add(it) }
+        collection?.id?.let {
+            apiService?.startDay(it)
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.unsubscribeOn(Schedulers.io())
+                    ?.subscribe(object : RetrofitSubscriber<Object>() {
+                        override fun onNext(response: Object) {
+                        }
+
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+                    })
+        }
         close()
         val fragment = collection?.let { PlayerFragment.newInstance(it) }
         activity?.supportFragmentManager?.beginTransaction()

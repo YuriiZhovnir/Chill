@@ -62,4 +62,10 @@ interface ApiService {
 
     @POST("api/collection/{collection_id}/favorite/remove")
     fun removeToFavorite(@Path("collection_id") collectionId: Int): Observable<ArrayList<Category>>
+
+    @POST("api/user/meditation/{collection_id}/started")
+    fun startDay(@Path("collection_id") collectionId: Int): Observable<Object>
+
+    @POST("api/user/meditation/item/{collection_item_id}/ended")
+    fun endDay(@Path("collection_item_id") collectionItemId: Int): Observable<Object>
 }

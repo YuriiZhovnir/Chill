@@ -84,6 +84,22 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
             progress?.max = duration ?: 100
         }
         player?.setOnCompletionListener {
+            if (collection?.isMeditation() == true) {
+                collection?.selectedDay?.id?.let {
+                    apiService?.endDay(it)
+                            ?.subscribeOn(Schedulers.io())
+                            ?.observeOn(AndroidSchedulers.mainThread())
+                            ?.unsubscribeOn(Schedulers.io())
+                            ?.subscribe(object : RetrofitSubscriber<Object>() {
+                                override fun onNext(response: Object) {
+                                }
+
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                }
+            }
             button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         }
         button()
