@@ -134,12 +134,22 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                 .load(playAudio?.collectionItem?.previewPhotoUrl).resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
                 .into(audioImage)
         audioName?.text = playAudio?.collectionItem?.collectionItems?.get(0)?.title
-        authorName?.text = playAudio?.collectionItem?.authors?.get(0).fullName
+        try {
+            authorName?.text = playAudio?.collectionItem?.authors?.get(0).fullName
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
         button?.setImageResource(R.drawable.ic_pause_black_24dp)
         player = MediaPlayer()
-        player?.setDataSource(applicationContext, Uri.parse(playAudio?.collectionItem?.collectionItems?.get(0)?.audioUrl))
+        player?.setDataSource(applicationContext, if (collection?.isMeditation() == false) {
+            Uri.parse(collection?.collectionItems?.get(0)?.audioUrl)
+        } else {
+            val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+            Uri.parse(currentData?.audioUrl)
+        })
         player?.prepare()
         player?.start()
+        player?.seekTo(playAudio.startFrom)
         player?.setOnPreparedListener(this)
         player?.setOnCompletionListener {
             button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)

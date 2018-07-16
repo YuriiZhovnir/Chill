@@ -17,6 +17,7 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
                           @SerializedName("is_favorite") var isFavorite: Int?,
                           @SerializedName("ended_count") var endedCount: Int?,
                           @SerializedName("is_new") var isNew: Int?,
+                          @SerializedName("is_meditation") var isMeditation: Int?,
                           @SerializedName("authors") var authors: ArrayList<Author>,
                           @SerializedName("collection_items") var collectionItems: ArrayList<CollectionData>) : Serializable {
     companion object {
@@ -33,5 +34,9 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
 
     fun isNew(): Boolean {
         return isNew == 1
+    }
+
+    fun isMeditation(): Boolean {
+        return isMeditation == 1
     }
 }

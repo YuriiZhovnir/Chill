@@ -87,6 +87,16 @@ class MeditationPreviewFragment : BaseFragment() {
         }
     }
 
+    @OnClick(R.id.button)
+    fun button() {
+        close()
+        val fragment = collection?.let { PlayerFragment.newInstance(it) }
+        activity?.supportFragmentManager?.beginTransaction()
+                ?.add(android.R.id.content, fragment)
+                ?.addToBackStack(fragment?.tag)
+                ?.commit()
+    }
+
     @OnClick(R.id.close)
     fun close() {
         activity?.supportFragmentManager?.popBackStack()
@@ -119,5 +129,4 @@ class MeditationPreviewFragment : BaseFragment() {
                     }
                 })
     }
-
 }

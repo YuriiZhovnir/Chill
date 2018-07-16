@@ -7,11 +7,13 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import butterknife.OnClick
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.event.ContinuePlay
+import jdroidcoder.ua.chill.event.PlayAudio
 import jdroidcoder.ua.chill.event.UpdateFavorite
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
@@ -45,8 +47,22 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
         super.onViewCreated(view, savedInstanceState)
         collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
         Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
-        title.text = collection?.collectionItems?.get(0)?.title
-        author.text = "${collection?.authors?.get(0)?.position?.name}: ${collection?.authors?.get(0)?.fullName}"
+        if (collection?.isMeditation() == false) {
+            author?.text = "${collection?.authors?.get(0)?.position?.name}: ${collection?.authors?.get(0)?.fullName}"
+            currentDay?.visibility = View.GONE
+            header?.visibility = View.GONE
+            music?.visibility = View.GONE
+            title.text = collection?.collectionItems?.get(0)?.title
+        } else {
+            author?.visibility = View.GONE
+            val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+            currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
+            titleMeditation?.text = collection?.title
+            title?.text = collection?.collectionItems?.get(0)?.title
+            music?.visibility = View.VISIBLE
+            val ll = favorite?.layoutParams as RelativeLayout.LayoutParams
+            ll.addRule(RelativeLayout.ALIGN_RIGHT, mainButton.id)
+        }
         if (collection?.isFavorite() == true) {
             favoriteIcon.setImageResource(R.drawable.ic_favorite_black_24dp)
         } else {
@@ -55,9 +71,15 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
         player = MainActivity.player
         if (player == null) {
             player = MediaPlayer()
-            player?.setDataSource(activity?.applicationContext, Uri.parse(collection?.collectionItems?.get(0)?.audioUrl))
+            player?.setDataSource(activity?.applicationContext, if (collection?.isMeditation() == false) {
+                Uri.parse(collection?.collectionItems?.get(0)?.audioUrl)
+            } else {
+                val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+                Uri.parse(currentData?.audioUrl)
+            })
             player?.prepare()
             player?.setOnPreparedListener(this)
+            MainActivity.player = player
         } else {
             val duration = player?.duration
             progress?.max = duration ?: 100
@@ -115,6 +137,16 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
             button?.setImageResource(R.drawable.ic_pause_black_24dp)
             player?.start()
         }
+    }
+
+    @OnClick(R.id.music)
+    fun music() {
+        EventBus.getDefault().post(collection?.let {
+            player?.currentPosition?.let { it1 ->
+                PlayAudio(it, it1)
+            }
+        })
+        close()
     }
 
     @OnClick(R.id.close)
