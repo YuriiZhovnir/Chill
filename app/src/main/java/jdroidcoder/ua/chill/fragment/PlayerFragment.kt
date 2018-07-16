@@ -12,7 +12,9 @@ import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.event.ContinuePlay
+import jdroidcoder.ua.chill.event.UpdateFavorite
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
+import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.CollectionItem
 import kotlinx.android.synthetic.main.fragment_palyer.*
 import org.greenrobot.eventbus.EventBus
@@ -130,8 +132,9 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
         request?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.unsubscribeOn(Schedulers.io())
-                ?.subscribe(object : RetrofitSubscriber<Object>() {
-                    override fun onNext(response: Object) {
+                ?.subscribe(object : RetrofitSubscriber<ArrayList<Category>>() {
+                    override fun onNext(response: ArrayList<Category>) {
+                        EventBus.getDefault().post(UpdateFavorite())
                         if (collection?.isFavorite() == true) {
                             collection?.isFavorite = 0
                             favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp)

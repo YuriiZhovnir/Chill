@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.adapter.GridAdapter
+import jdroidcoder.ua.chill.event.UpdateFavorite
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.util.EndlessScrollListener
 import kotlinx.android.synthetic.main.fragment_collection.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -38,6 +42,7 @@ class CollectionFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventBus.getDefault().register(this)
         resource = arguments?.getString(RESOURCE_KEY)
         id = arguments?.getInt(SUBCATEGORY_ID_KEY, 0)
         adapder = arguments?.getBoolean(IS_MEDITATION_KEY, false)?.let { GridAdapter(context, ArrayList(), it) }
@@ -70,5 +75,18 @@ class CollectionFragment : BaseFragment() {
                         e.printStackTrace()
                     }
                 })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateFavorite(updateFavorite: UpdateFavorite) {
+        if (resource == RESOURCE_FAVORITE) {
+            adapder?.clear()
+            load(1)
+        }
+    }
+
+    override fun onDestroyView() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroyView()
     }
 }

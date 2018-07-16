@@ -58,8 +58,8 @@ interface ApiService {
     fun getCollection(@Path("collection_id") collectionId: Int): Observable<CollectionItem>
 
     @POST("api/collection/{collection_id}/favorite/add")
-    fun addToFavorite(@Path("collection_id") collectionId: Int): Observable<Object>
+    fun addToFavorite(@Path("collection_id") collectionId: Int): Observable<ArrayList<Category>>
 
     @POST("api/collection/{collection_id}/favorite/remove")
-    fun removeToFavorite(@Path("collection_id") collectionId: Int): Observable<Object>
+    fun removeToFavorite(@Path("collection_id") collectionId: Int): Observable<ArrayList<Category>>
 }

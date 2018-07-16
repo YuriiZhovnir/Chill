@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.response.CollectionItem
 import kotlinx.android.synthetic.main.fragment_preview_meditation.*
@@ -32,6 +33,7 @@ class MeditationPreviewFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
+        currentDay?.typeface = ChillApp.demiFont
         Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
         title.text = collection?.title
         previewText.text = collection?.coverText

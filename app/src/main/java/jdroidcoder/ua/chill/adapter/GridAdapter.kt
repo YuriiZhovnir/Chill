@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.event.PlayAudio
@@ -31,13 +32,19 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
         notifyDataSetChanged()
     }
 
+    fun clear(){
+        collections.clear()
+        notifyDataSetChanged()
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.grid_item_style, parent, false)
         val collection = collections?.get(position)
         Picasso.with(context).load(collection?.previewPhotoUrl)
                 .resizeDimen(R.dimen.size_150_dp, R.dimen.size_150_dp)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .placeholder(android.R.color.white)
                 .into(view.findViewById<ImageView>(R.id.image))
-
         if (collection.isFree()) {
             view.findViewById<ImageView>(R.id.lock).visibility = View.GONE
         } else {
