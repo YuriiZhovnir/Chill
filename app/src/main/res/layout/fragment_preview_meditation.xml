@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -24,7 +25,7 @@
         android:src="@drawable/ic_download" />
 
     <ImageView
-        android:id="@+id/favoriteIcon"
+        android:id="@+id/favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -33,10 +34,11 @@
 
     <ImageView
         android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
+        android:scaleType="center"
         android:src="@drawable/ic_close_black_24dp" />
 
     <RelativeLayout
@@ -79,7 +81,7 @@
         android:textSize="14sp" />
 
     <HorizontalScrollView
-        android:id="@+id/days_container"
+        android:id="@+id/daysContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/previewText"
@@ -92,14 +94,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/current_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/days_container"
+        android:layout_below="@id/daysContainer"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
