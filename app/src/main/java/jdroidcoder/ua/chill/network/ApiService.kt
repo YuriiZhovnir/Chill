@@ -1,9 +1,6 @@
 package jdroidcoder.ua.chill.network
 
-import jdroidcoder.ua.chill.response.Category
-import jdroidcoder.ua.chill.response.CollectionItem
-import jdroidcoder.ua.chill.response.Home
-import jdroidcoder.ua.chill.response.Token
+import jdroidcoder.ua.chill.response.*
 import retrofit2.http.*
 import rx.Observable
 
@@ -68,4 +65,12 @@ interface ApiService {
 
     @POST("api/user/meditation/item/{collection_item_id}/ended")
     fun endDay(@Path("collection_item_id") collectionItemId: Int): Observable<Object>
+
+    @GET("api/user/statistics")
+    fun getStatistics(): Observable<Statistic>
+
+    @POST("api/user/collection/{collection_id}/rating/update")
+    @FormUrlEncoded
+    fun feedback(@Path("collection_id") collectionId: Int,
+                 @Field("rating") rating: Float): Observable<Object>
 }

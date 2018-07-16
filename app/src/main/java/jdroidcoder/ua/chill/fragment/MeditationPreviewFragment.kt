@@ -60,13 +60,13 @@ class MeditationPreviewFragment : BaseFragment() {
                 val ll = tempView.layoutParams as LinearLayout.LayoutParams
                 ll.setMargins(10, 10, 10, 10)
                 tempView.layoutParams = ll
-                if (day.number <= collection?.endedCount ?: 1) {
+                if (day.isEnded()) {
                     textView?.setBackgroundResource(R.drawable.ic_current_day_border)
                     textView?.setTextColor(Color.parseColor("#000000"))
                 }
                 textView?.text = day?.number?.toString()
                 tempView?.setOnClickListener {
-                    if (day.number <= collection?.endedCount ?: 1) {
+                    if (day.isEnded()) {
                         currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, day?.number) }
                         duration?.text = resources?.getString(R.string.min_label)?.let {
                             String.format(it, day?.audioDuration?.toLong()?.let { it1 ->
@@ -90,7 +90,7 @@ class MeditationPreviewFragment : BaseFragment() {
                 }
             }
         })
-        val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+        val currentData = collection?.collectionItems?.first { p -> !p.isEnded() }
         collection?.selectedDay = currentData
         currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
         duration?.text = resources?.getString(R.string.min_label)?.let {

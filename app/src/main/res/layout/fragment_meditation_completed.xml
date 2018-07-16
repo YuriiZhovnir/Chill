@@ -44,7 +44,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_margin="20dp">
+                android:layout_margin="15dp">
 
                 <com.github.mmin18.widget.RealtimeBlurView
                     android:layout_width="match_parent"
@@ -137,9 +137,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp">
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp">
 
                 <com.github.mmin18.widget.RealtimeBlurView
                     android:layout_width="match_parent"
@@ -160,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/image"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -209,7 +210,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_margin="20dp">
+                android:layout_margin="15dp">
 
                 <com.github.mmin18.widget.RealtimeBlurView
                     android:layout_width="match_parent"
@@ -228,7 +229,7 @@
                     android:textSize="16sp" />
 
                 <RatingBar
-                    android:id="@+id/serviceRating"
+                    android:id="@+id/rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title1"
@@ -238,8 +239,7 @@
                     android:maxHeight="24dp"
                     android:minHeight="24dp"
                     android:numStars="5"
-                    android:progressDrawable="@drawable/star_half"
-                    android:stepSize="1" />
+                    android:progressDrawable="@drawable/star_half" />
             </RelativeLayout>
 
         </LinearLayout>

@@ -99,7 +99,17 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                 }
                             })
                 }
+                collection?.collectionItems?.first { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
+                val isLast = collection?.collectionItems?.findLast { p -> !p.isEnded() }
+                if (isLast == null) {
+                    val fragment = collection?.let { MeditationCompletedFragment.newInstance(it) }
+                    activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(android.R.id.content, fragment)
+                            ?.addToBackStack(fragment?.tag)
+                            ?.commit()
+                }
             }
+
             button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         }
         button()

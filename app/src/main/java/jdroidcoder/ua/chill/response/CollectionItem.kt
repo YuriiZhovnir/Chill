@@ -40,4 +40,19 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
     fun isMeditation(): Boolean {
         return isMeditation == 1
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as CollectionItem
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id ?: 0
+    }
 }

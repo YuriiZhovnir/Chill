@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         var isNeedPlay = false
     }
 
+    private var apiService = RetrofitConfig().adapter
     private var timer: CountDownTimer? = null
     private var collection: CollectionItem? = null
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
         ButterKnife.bind(this)
-        RetrofitConfig().adapter.getCategories()
+        apiService.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -77,11 +78,14 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         }
         audioName?.typeface = ChillApp?.demiFont
         home()
-        val fragment = MeditationCompletedFragment.newInstance()
-        supportFragmentManager?.beginTransaction()
-                ?.replace(android.R.id.content, fragment)
-                ?.addToBackStack(fragment.tag)
-                ?.commit()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager?.fragments?.isEmpty() == false
+                && supportFragmentManager?.fragments?.last() is MeditationCompletedFragment) {
+            return
+        }
+        super.onBackPressed()
     }
 
     @OnClick(R.id.home)
@@ -157,6 +161,31 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         player?.seekTo(playAudio.startFrom)
         player?.setOnPreparedListener(this)
         player?.setOnCompletionListener {
+            if (collection?.isMeditation() == true) {
+                collection?.selectedDay?.id?.let {
+                    apiService?.endDay(it)
+                            ?.subscribeOn(Schedulers.io())
+                            ?.observeOn(AndroidSchedulers.mainThread())
+                            ?.unsubscribeOn(Schedulers.io())
+                            ?.subscribe(object : RetrofitSubscriber<Object>() {
+                                override fun onNext(response: Object) {
+                                }
+
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                }
+                collection?.collectionItems?.first { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
+                val isLast = collection?.collectionItems?.findLast { p -> !p.isEnded() }
+                if (isLast == null) {
+                    val fragment = collection?.let { MeditationCompletedFragment.newInstance(it) }
+                    supportFragmentManager?.beginTransaction()
+                            ?.add(android.R.id.content, fragment)
+                            ?.addToBackStack(fragment?.tag)
+                            ?.commit()
+                }
+            }
             button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)
         }
     }
