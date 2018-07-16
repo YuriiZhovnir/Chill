@@ -8,10 +8,13 @@ import butterknife.OnClick
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.event.UpdateFavorite
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
+import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Statistic
 import kotlinx.android.synthetic.main.fragment_meditation_completed.*
+import org.greenrobot.eventbus.EventBus
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -51,6 +54,32 @@ class MeditationCompletedFragment : BaseFragment() {
                         mindful?.text = response?.mindfulDays?.toString()
                         current?.text = response?.currentStreak?.toString()
                         longest?.text = response?.longestStreak?.toString()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
+    }
+
+    @OnClick(R.id.favorite)
+    fun favorite() {
+        val request = if (collection?.isFavorite() == true) {
+            collection?.id?.let { apiService?.removeToFavorite(it) }
+        } else {
+            collection?.id?.let { apiService?.addToFavorite(it) }
+        }
+        request?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.unsubscribeOn(Schedulers.io())
+                ?.subscribe(object : RetrofitSubscriber<ArrayList<Category>>() {
+                    override fun onNext(response: ArrayList<Category>) {
+                        EventBus.getDefault().post(UpdateFavorite())
+                        if (collection?.isFavorite() == true) {
+                            collection?.isFavorite = 0
+                        } else {
+                            collection?.isFavorite = 1
+                        }
                     }
 
                     override fun onError(e: Throwable) {
