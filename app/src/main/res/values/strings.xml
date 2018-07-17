@@ -36,4 +36,5 @@
     <string name="download_label">Download</string>
     <string name="share_label">Share</string>
     <string name="rate_label">Rate the guidance in this session</string>
+    <string name="available_in_offline">Available in offline</string>
 </resources>

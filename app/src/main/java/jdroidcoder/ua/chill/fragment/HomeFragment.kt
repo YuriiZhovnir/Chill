@@ -58,6 +58,11 @@ class HomeFragment : BaseFragment() {
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        recommendedLabel?.visibility = View.GONE
+                        recommendedList?.visibility = View.GONE
+                        continueLabel?.text = resources?.getString(R.string.available_in_offline)
+                        continueList?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        continueList?.adapter = HomeAdapter(ChillApp.offlineCollections)
                     }
                 })
     }

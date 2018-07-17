@@ -109,26 +109,38 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     @OnClick(R.id.sleep)
     fun sleep() {
-        val fragment = ChillApp.category?.find { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
-        supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, fragment)
-                ?.commit()
+        try {
+            val fragment = ChillApp.category?.find { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
+            supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container, fragment)
+                    ?.commit()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     @OnClick(R.id.meditate)
     fun meditate() {
-        val fragment = ChillApp.category?.find { p -> p.name == "Meditations" }?.let { MeditateFragment.newInstance(it) }
-        supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, fragment)
-                ?.commit()
+        try {
+            val fragment = ChillApp.category?.find { p -> p.name == "Meditations" }?.let { MeditateFragment.newInstance(it) }
+            supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container, fragment)
+                    ?.commit()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     @OnClick(R.id.music)
     fun music() {
-        val fragment = ChillApp.category?.find { p -> p.name == "Music" }?.let { MusicFragment.newInstance(it) }
-        supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, fragment)
-                ?.commit()
+        try {
+            val fragment = ChillApp.category?.find { p -> p.name == "Music" }?.let { MusicFragment.newInstance(it) }
+            supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container, fragment)
+                    ?.commit()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     @OnClick(R.id.playerView)
