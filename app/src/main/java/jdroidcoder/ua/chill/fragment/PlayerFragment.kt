@@ -245,6 +245,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                             ?.subscribeOn(Schedulers.io())
                             ?.observeOn(AndroidSchedulers.mainThread())
                             ?.unsubscribeOn(Schedulers.io())
+                            ?.doOnSubscribe(this::startLoading)
                             ?.subscribe(object : RetrofitSubscriber<ResponseBody>() {
                                 override fun onNext(response: ResponseBody) {
                                     object : AsyncTask<CollectionData, Void, CollectionData>() {
@@ -273,6 +274,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                                     ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)
                                                 }
+                                                stopLoading()
                                             }
                                         }
                                     }.execute(uri)

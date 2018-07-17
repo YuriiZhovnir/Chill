@@ -135,6 +135,7 @@ class MeditationPreviewFragment : BaseFragment() {
                             ?.subscribeOn(Schedulers.io())
                             ?.observeOn(AndroidSchedulers.mainThread())
                             ?.unsubscribeOn(Schedulers.io())
+                            ?.doOnSubscribe(this::startLoading)
                             ?.subscribe(object : RetrofitSubscriber<ResponseBody>() {
                                 override fun onNext(response: ResponseBody) {
                                     object : AsyncTask<CollectionData, Void, CollectionData>() {
@@ -163,6 +164,7 @@ class MeditationPreviewFragment : BaseFragment() {
                                                     ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)
                                                 }
+                                                stopLoading()
                                             }
                                         }
                                     }.execute(uri)

@@ -1,5 +1,7 @@
 package jdroidcoder.ua.chill.fragment
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
@@ -29,6 +31,8 @@ abstract class BaseFragment : Fragment() {
 
     private var unbinder: Unbinder = Unbinder.EMPTY
     protected val apiService = RetrofitConfig().adapter
+    private var progressDialog: ProgressDialog? = null
+    private var isShowProgressDialog = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,35 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         unbinder.unbind()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        progressDialog = ProgressDialog(context)
+        progressDialog?.setTitle("")
+        progressDialog?.setMessage("")
+        progressDialog?.setCancelable(false)
+        progressDialog?.isIndeterminate = false
+        progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    fun startLoading() {
+        if (!isShowProgressDialog && isAdded) {
+            isShowProgressDialog = true
+            progressDialog?.show()
+            progressDialog?.setContentView(R.layout.custom_progress_layout)
+        }
+    }
+
+    fun stopLoading() {
+        isShowProgressDialog = false
+        try {
+            if (progressDialog != null && progressDialog!!.isShowing) {
+                progressDialog?.dismiss()
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     @OnClick(R.id.empty)
