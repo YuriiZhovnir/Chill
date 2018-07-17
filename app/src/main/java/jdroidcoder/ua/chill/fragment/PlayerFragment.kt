@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import butterknife.OnClick
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
@@ -56,7 +57,14 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
-        Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+        if (Utils.isNetworkConnected(context)) {
+            Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+        } else {
+            Picasso.with(context)
+                    .load(collection?.backgroundPhotoUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(background)
+        }
         if (collection?.isMeditation() == false) {
             author?.text = "${collection?.authors?.get(0)?.position?.name}: ${collection?.authors?.get(0)?.fullName}"
             currentDay?.visibility = View.GONE
@@ -246,6 +254,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                             ?.observeOn(AndroidSchedulers.mainThread())
                             ?.unsubscribeOn(Schedulers.io())
                             ?.doOnSubscribe(this::startLoading)
+
                             ?.subscribe(object : RetrofitSubscriber<ResponseBody>() {
                                 override fun onNext(response: ResponseBody) {
                                     object : AsyncTask<CollectionData, Void, CollectionData>() {

@@ -25,6 +25,7 @@ import android.widget.FrameLayout
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.support.v4.app.ActivityCompat
+import com.squareup.picasso.NetworkPolicy
 import jdroidcoder.ua.chill.response.CollectionData
 import jdroidcoder.ua.chill.util.Utils
 import okhttp3.ResponseBody
@@ -52,7 +53,11 @@ class MeditationPreviewFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
         currentDay?.typeface = ChillApp.demiFont
-        Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+        if (Utils.isNetworkConnected(context)) {
+            Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+        } else {
+            Picasso.with(context).load(collection?.backgroundPhotoUrl).networkPolicy(NetworkPolicy.OFFLINE).into(background)
+        }
         title.text = collection?.title
         previewText.text = collection?.coverText
         if (collection?.isFavorite() == true) {

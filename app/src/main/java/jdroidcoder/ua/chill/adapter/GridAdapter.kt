@@ -1,7 +1,6 @@
 package jdroidcoder.ua.chill.adapter
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import jdroidcoder.ua.chill.fragment.MeditationPreviewFragment
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
+import jdroidcoder.ua.chill.util.Utils
 import org.greenrobot.eventbus.EventBus
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -41,11 +41,18 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.grid_item_style, parent, false)
         val collection = collections?.get(position)
-        Picasso.with(context).load(collection?.previewPhotoUrl)
-                .resizeDimen(R.dimen.size_150_dp, R.dimen.size_150_dp)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .placeholder(android.R.color.white)
-                .into(view.findViewById<ImageView>(R.id.image))
+        if (Utils.isNetworkConnected(context)) {
+            Picasso.with(context).load(collection?.previewPhotoUrl)
+                    .resizeDimen(R.dimen.size_150_dp, R.dimen.size_150_dp)
+                    .placeholder(android.R.color.white)
+                    .into(view.findViewById<ImageView>(R.id.image))
+        } else {
+            Picasso.with(context).load(collection?.previewPhotoUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resizeDimen(R.dimen.size_150_dp, R.dimen.size_150_dp)
+                    .placeholder(android.R.color.white)
+                    .into(view.findViewById<ImageView>(R.id.image))
+        }
         if (collection.isFree()) {
             view.findViewById<ImageView>(R.id.lock).visibility = View.GONE
         } else {

@@ -20,6 +20,7 @@ import android.view.ViewTreeObserver
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.google.gson.GsonBuilder
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.event.ContinuePlay
@@ -35,7 +36,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
@@ -162,9 +162,19 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
             player?.stop()
         }
         playerView?.visibility = View.VISIBLE
-        Picasso.with(this)
-                .load(playAudio?.collectionItem?.previewPhotoUrl).resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
-                .into(audioImage)
+        if (Utils.isNetworkConnected(this)) {
+            Picasso.with(this)
+                    .load(playAudio?.collectionItem?.previewPhotoUrl)
+                    .resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
+                    .into(audioImage)
+        } else {
+            Picasso.with(this)
+                    .load(playAudio?.collectionItem?.previewPhotoUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
+                    .into(audioImage)
+        }
+
         audioName?.text = playAudio?.collectionItem?.collectionItems?.get(0)?.title
         try {
             authorName?.text = playAudio?.collectionItem?.authors?.get(0).fullName
@@ -176,7 +186,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         player?.setDataSource(applicationContext, if (collection?.isMeditation() == false) {
             Uri.parse(collection?.collectionItems?.get(0)?.audioUrl)
         } else {
-            val currentData = collection?.collectionItems?.first { p -> p.number == collection?.endedCount ?: 1 }
+            val currentData = collection?.collectionItems?.find { p -> p.number == collection?.endedCount ?: 1 }
             Uri.parse(currentData?.audioUrl)
         })
         player?.prepare()

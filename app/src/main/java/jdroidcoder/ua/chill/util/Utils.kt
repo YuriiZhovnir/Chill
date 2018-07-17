@@ -10,6 +10,8 @@ import javax.crypto.spec.SecretKeySpec
 import okhttp3.ResponseBody
 import java.io.*
 import java.util.TreeSet
+import android.net.ConnectivityManager
+
 
 /**
  * Created by jdroidcoder on 03.07.2018.
@@ -117,5 +119,10 @@ object Utils {
             e.printStackTrace()
             return false
         }
+    }
+
+    fun isNetworkConnected(context: Context?): Boolean {
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo != null
     }
 }

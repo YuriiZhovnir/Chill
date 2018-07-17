@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
@@ -14,6 +15,7 @@ import jdroidcoder.ua.chill.fragment.MeditationPreviewFragment
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
+import jdroidcoder.ua.chill.util.Utils
 import kotlinx.android.synthetic.main.home_item_style.view.*
 import org.greenrobot.eventbus.EventBus
 import rx.android.schedulers.AndroidSchedulers
@@ -36,7 +38,14 @@ class HomeAdapter(var items: ArrayList<CollectionItem>) : RecyclerView.Adapter<H
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items?.get(position)
-        Picasso.with(context).load(item.previewPhotoUrl).resizeDimen(R.dimen.size_160_dp, R.dimen.size_120_dp).into(holder.image)
+        if (Utils.isNetworkConnected(context)) {
+            Picasso.with(context).load(item.previewPhotoUrl).resizeDimen(R.dimen.size_160_dp, R.dimen.size_120_dp).into(holder.image)
+        } else {
+            Picasso.with(context).load(item.previewPhotoUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resizeDimen(R.dimen.size_160_dp, R.dimen.size_120_dp)
+                    .into(holder.image)
+        }
         holder.title.typeface = ChillApp.demiFont
         holder.title.text = item.title
         holder.description.text = item.coverText

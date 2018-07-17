@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import butterknife.OnClick
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
@@ -49,10 +50,18 @@ class MeditationCompletedFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         youDidIt?.typeface = ChillApp.demiFont
         collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
-        Picasso.with(context)
-                .load(collection?.previewPhotoUrl)
-                .resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
-                .into(image)
+        if (Utils.isNetworkConnected(context)) {
+            Picasso.with(context)
+                    .load(collection?.previewPhotoUrl)
+                    .resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
+                    .into(image)
+        } else {
+            Picasso.with(context)
+                    .load(collection?.previewPhotoUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resizeDimen(R.dimen.size_60_dp, R.dimen.size_60_dp)
+                    .into(image)
+        }
         title?.text = collection?.title
         apiService.getStatistics()
                 .subscribeOn(Schedulers.io())
