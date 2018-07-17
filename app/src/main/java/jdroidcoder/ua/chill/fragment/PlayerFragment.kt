@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import butterknife.OnClick
 import com.squareup.picasso.Picasso
+import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.event.ContinuePlay
@@ -268,7 +269,10 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                             super.onPostExecute(result)
                                             if (count == collection?.collectionItems?.size) {
                                                 collection?.collectionItems?.sortBy { p -> p.number }
-                                                collection?.let { Utils.saveDownloadedCollection(context, it) }
+                                                collection?.let {
+                                                    ChillApp?.offlineCollections?.add(it)
+                                                    Utils.saveDownloadedCollection(context, it)
+                                                }
                                             }
                                         }
                                     }.execute(uri)

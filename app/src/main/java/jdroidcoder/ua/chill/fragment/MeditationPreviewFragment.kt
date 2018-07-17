@@ -159,7 +159,10 @@ class MeditationPreviewFragment : BaseFragment() {
                                             super.onPostExecute(result)
                                             if (count == collection?.collectionItems?.size) {
                                                 collection?.collectionItems?.sortBy { p -> p.number }
-                                                collection?.let { Utils.saveDownloadedCollection(context, it) }
+                                                collection?.let {
+                                                    ChillApp?.offlineCollections?.add(it)
+                                                    Utils.saveDownloadedCollection(context, it)
+                                                }
                                             }
                                         }
                                     }.execute(uri)

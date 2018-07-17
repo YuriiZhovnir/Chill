@@ -1,6 +1,11 @@
 package jdroidcoder.ua.chill.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +16,16 @@ import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.event.UpdateFavorite
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
+import jdroidcoder.ua.chill.response.CollectionData
 import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Statistic
+import jdroidcoder.ua.chill.util.Utils
 import kotlinx.android.synthetic.main.fragment_meditation_completed.*
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 
 /**
  * Created by jdroidcoder on 16.07.2018.
@@ -86,6 +95,76 @@ class MeditationCompletedFragment : BaseFragment() {
                         e.printStackTrace()
                     }
                 })
+    }
+
+    @OnClick(R.id.download)
+    fun downloadButton() {
+        if (context?.let { it1 -> ActivityCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE) }
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context!!,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            download()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    43)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 43 && (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            download()
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private fun download() {
+        var count = 0
+        collection?.collectionItems?.let {
+            for (uri in it) {
+                uri.audioUrl?.let { it1 ->
+                    apiService?.download(it1)
+                            ?.subscribeOn(Schedulers.io())
+                            ?.observeOn(AndroidSchedulers.mainThread())
+                            ?.unsubscribeOn(Schedulers.io())
+                            ?.subscribe(object : RetrofitSubscriber<ResponseBody>() {
+                                override fun onNext(response: ResponseBody) {
+                                    object : AsyncTask<CollectionData, Void, CollectionData>() {
+                                        override fun doInBackground(vararg params: CollectionData): CollectionData {
+                                            val fileName = uri?.audioUrl?.lastIndexOf('/')
+                                                    ?.plus(1)?.let { it2 ->
+                                                        uri?.audioUrl?.substring(it2)
+                                                    }
+                                            fileName?.let { it2 ->
+                                                Utils.writeResponseBodyToDisk(response, activity, it2)
+                                            }
+                                            collection?.collectionItems?.remove(params[0])
+                                            params[0]?.audioUrl = context
+                                                    ?.getExternalFilesDir(null).toString() +
+                                                    File.separator + fileName
+                                            collection?.collectionItems?.add(params[0])
+                                            count++
+                                            return params[0]
+                                        }
+
+                                        override fun onPostExecute(result: CollectionData?) {
+                                            super.onPostExecute(result)
+                                            if (count == collection?.collectionItems?.size) {
+                                                collection?.collectionItems?.sortBy { p -> p.number }
+                                                collection?.let {
+                                                    ChillApp?.offlineCollections?.add(it)
+                                                    Utils.saveDownloadedCollection(context, it)
+                                                }
+                                            }
+                                        }
+                                    }.execute(uri)
+                                }
+
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                }
+            }
+        }
     }
 
     @OnClick(R.id.close)
