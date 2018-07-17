@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.event.ContinuePlay
@@ -28,6 +29,7 @@ import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.CollectionItem
+import jdroidcoder.ua.chill.util.Utils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -35,6 +37,7 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 /**
  * Created by jdroidcoder on 09.07.2018.
@@ -78,6 +81,14 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         }
         audioName?.typeface = ChillApp?.demiFont
         home()
+
+        val offlineCollections = Utils.loadDownloadedCollection(this)
+        val gson = GsonBuilder().create()
+        offlineCollections?.let {
+            for (it in offlineCollections) {
+                ChillApp.offlineCollections.add(gson.fromJson(it, CollectionItem::class.java))
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -98,7 +109,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     @OnClick(R.id.sleep)
     fun sleep() {
-        val fragment = ChillApp.category?.first { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
+        val fragment = ChillApp.category?.find { p -> p.name == "Sleep" }?.let { SleepFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()
@@ -106,7 +117,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     @OnClick(R.id.meditate)
     fun meditate() {
-        val fragment = ChillApp.category?.first { p -> p.name == "Meditations" }?.let { MeditateFragment.newInstance(it) }
+        val fragment = ChillApp.category?.find { p -> p.name == "Meditations" }?.let { MeditateFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()
@@ -114,7 +125,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     @OnClick(R.id.music)
     fun music() {
-        val fragment = ChillApp.category?.first { p -> p.name == "Music" }?.let { MusicFragment.newInstance(it) }
+        val fragment = ChillApp.category?.find { p -> p.name == "Music" }?.let { MusicFragment.newInstance(it) }
         supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.container, fragment)
                 ?.commit()
@@ -176,7 +187,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                                 }
                             })
                 }
-                collection?.collectionItems?.first { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
+                collection?.collectionItems?.find { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
                 val isLast = collection?.collectionItems?.findLast { p -> !p.isEnded() }
                 if (isLast == null) {
                     val fragment = collection?.let { MeditationCompletedFragment.newInstance(it) }

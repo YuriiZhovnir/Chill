@@ -99,7 +99,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                 }
                             })
                 }
-                collection?.collectionItems?.first { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
+                collection?.collectionItems?.find { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
                 val isLast = collection?.collectionItems?.findLast { p -> !p.isEnded() }
                 if (isLast == null) {
                     val fragment = collection?.let { MeditationCompletedFragment.newInstance(it) }

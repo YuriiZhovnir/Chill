@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.event.PlayAudio
 import jdroidcoder.ua.chill.fragment.MeditationPreviewFragment
@@ -32,7 +33,7 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
         notifyDataSetChanged()
     }
 
-    fun clear(){
+    fun clear() {
         collections.clear()
         notifyDataSetChanged()
     }
@@ -57,30 +58,39 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
         }
         view.setOnClickListener {
             collection.id?.let { it1 ->
-                RetrofitConfig().adapter.getCollection(it1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .unsubscribeOn(Schedulers.io())
-                        .subscribe(object : RetrofitSubscriber<CollectionItem>() {
-                            override fun onNext(response: CollectionItem) {
-                                if (isMeditation) {
-                                    val fragment = MeditationPreviewFragment.newInstance(response)
-                                    (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
-                                            ?.add(android.R.id.content, fragment)
-                                            ?.addToBackStack(fragment?.tag)
-                                            ?.commit()
-                                } else {
-                                    EventBus.getDefault().post(PlayAudio(response))
+                val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
+                if (offline == null) {
+                    RetrofitConfig().adapter.getCollection(it1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .unsubscribeOn(Schedulers.io())
+                            .subscribe(object : RetrofitSubscriber<CollectionItem>() {
+                                override fun onNext(response: CollectionItem) {
+                                    show(response)
                                 }
-                            }
 
-                            override fun onError(e: Throwable) {
-                                e.printStackTrace()
-                            }
-                        })
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                } else {
+                    show(offline)
+                }
             }
         }
         return view
+    }
+
+    private fun show(collection: CollectionItem) {
+        if (isMeditation) {
+            val fragment = MeditationPreviewFragment.newInstance(collection)
+            (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                    ?.add(android.R.id.content, fragment)
+                    ?.addToBackStack(fragment?.tag)
+                    ?.commit()
+        } else {
+            EventBus.getDefault().post(PlayAudio(collection))
+        }
     }
 
     override fun getItem(position: Int): Any {

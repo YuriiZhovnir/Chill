@@ -1,6 +1,7 @@
 package jdroidcoder.ua.chill.network
 
 import jdroidcoder.ua.chill.response.*
+import okhttp3.ResponseBody
 import retrofit2.http.*
 import rx.Observable
 
@@ -73,4 +74,8 @@ interface ApiService {
     @FormUrlEncoded
     fun feedback(@Path("collection_id") collectionId: Int,
                  @Field("rating") rating: Float): Observable<Object>
+
+    @GET
+    @Streaming
+    fun download(@Url fileUrl: String): Observable<ResponseBody>
 }

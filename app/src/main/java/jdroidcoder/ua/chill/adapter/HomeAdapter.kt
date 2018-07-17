@@ -42,28 +42,37 @@ class HomeAdapter(var items: ArrayList<CollectionItem>) : RecyclerView.Adapter<H
         holder.description.text = item.coverText
         holder.view.setOnClickListener {
             item.id?.let { it1 ->
-                RetrofitConfig().adapter.getCollection(it1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .unsubscribeOn(Schedulers.io())
-                        .subscribe(object : RetrofitSubscriber<CollectionItem>() {
-                            override fun onNext(response: CollectionItem) {
-                                if (item?.isMeditation()) {
-                                    val fragment = MeditationPreviewFragment.newInstance(response)
-                                    (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
-                                            ?.add(android.R.id.content, fragment)
-                                            ?.addToBackStack(fragment?.tag)
-                                            ?.commit()
-                                } else {
-                                    EventBus.getDefault().post(PlayAudio(response))
+                val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
+                if (offline == null) {
+                    RetrofitConfig().adapter.getCollection(it1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .unsubscribeOn(Schedulers.io())
+                            .subscribe(object : RetrofitSubscriber<CollectionItem>() {
+                                override fun onNext(response: CollectionItem) {
+                                    show(response)
                                 }
-                            }
 
-                            override fun onError(e: Throwable) {
-                                e.printStackTrace()
-                            }
-                        })
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                } else {
+                    show(offline)
+                }
             }
+        }
+    }
+
+    private fun show(collection: CollectionItem) {
+        if (collection?.isMeditation()) {
+            val fragment = MeditationPreviewFragment.newInstance(collection)
+            (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                    ?.add(android.R.id.content, fragment)
+                    ?.addToBackStack(fragment?.tag)
+                    ?.commit()
+        } else {
+            EventBus.getDefault().post(PlayAudio(collection))
         }
     }
 

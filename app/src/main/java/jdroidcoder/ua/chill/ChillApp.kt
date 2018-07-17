@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Typeface
 import com.facebook.FacebookSdk
 import jdroidcoder.ua.chill.response.Category
+import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Token
 
 /**
@@ -15,6 +16,7 @@ class ChillApp : Application() {
         var demiFont: Typeface? = null
         var token: Token? = null
         var category: ArrayList<Category>? = null
+        var offlineCollections = ArrayList<CollectionItem>()
     }
 
     override fun onCreate() {
