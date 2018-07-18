@@ -16,19 +16,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="33dp"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:textSize="82sp" />
+        android:textSize="62sp" />
 
     <LinearLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appName"
+        android:layout_centerInParent="true"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -44,7 +44,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/input_background"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/name_icon"
@@ -134,6 +134,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -142,7 +144,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pre_terms_slogan"
-            android:textColor="#D0D0D0" />
+            android:textColor="#D0D0D0"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/terms"
@@ -150,6 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="@string/terms"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
     </LinearLayout>
 </RelativeLayout>
