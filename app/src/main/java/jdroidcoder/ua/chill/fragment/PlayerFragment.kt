@@ -9,6 +9,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.ActivityCompat
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,10 +59,13 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
         super.onViewCreated(view, savedInstanceState)
         collection = arguments?.getSerializable(COLLECTION_KEY) as CollectionItem
         if (Utils.isNetworkConnected(context)) {
-            Picasso.with(context).load(collection?.backgroundPhotoUrl).into(background)
+            Picasso.with(context).load(collection?.backgroundPhotoUrl)
+                    .resize(MainActivity.width, MainActivity.height)
+                    .into(background)
         } else {
             Picasso.with(context)
                     .load(collection?.backgroundPhotoUrl)
+                    .resize(MainActivity.width, MainActivity.height)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(background)
         }

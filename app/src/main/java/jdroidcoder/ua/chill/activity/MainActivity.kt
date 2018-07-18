@@ -15,6 +15,7 @@ import android.graphics.Canvas
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.CountDownTimer
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewTreeObserver
 import butterknife.ButterKnife
@@ -46,6 +47,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
     companion object {
         var player: MediaPlayer? = null
         var isNeedPlay = false
+        var width: Int = 0
+        var height: Int = 0
     }
 
     private var apiService = RetrofitConfig().adapter
@@ -56,6 +59,10 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
+        val dm = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(dm)
+        width = dm.widthPixels
+        height = dm.heightPixels
         ButterKnife.bind(this)
         apiService.getCategories()
                 .subscribeOn(Schedulers.io())
