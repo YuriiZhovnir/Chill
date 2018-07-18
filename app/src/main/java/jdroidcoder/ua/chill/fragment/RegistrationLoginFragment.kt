@@ -77,8 +77,11 @@ class RegistrationLoginFragment : BaseFragment() {
         request.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
+                .doOnSubscribe(this::startLoading)
+                .doOnCompleted(this::stopLoading)
                 .subscribe(object : RetrofitSubscriber<Token>() {
                     override fun onNext(response: Token) {
+                        stopLoading()
                         Utils.saveToken(context, response.accessToken)
                         ChillApp.token = response
                         startActivity(Intent(context, MainActivity::class.java))
@@ -86,6 +89,7 @@ class RegistrationLoginFragment : BaseFragment() {
                     }
 
                     override fun onError(e: Throwable) {
+                        stopLoading()
                         e.printStackTrace()
                     }
                 })

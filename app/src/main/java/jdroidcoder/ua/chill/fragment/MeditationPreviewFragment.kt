@@ -176,7 +176,8 @@ class MeditationPreviewFragment : BaseFragment() {
                                             if (count == collection?.collectionItems?.size) {
                                                 collection?.collectionItems?.sortBy { p -> p.id }
                                                 collection?.let {
-                                                    ChillApp?.offlineCollections?.add(it)
+                                                    if (!ChillApp?.offlineCollections?.contains(it))
+                                                        ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)
                                                 }
                                                 stopLoading()
@@ -196,7 +197,10 @@ class MeditationPreviewFragment : BaseFragment() {
 
     @OnClick(R.id.button)
     fun button() {
-        collection?.let { HomeFragment?.continueItems?.add(it) }
+        collection?.let {
+            if (!HomeFragment?.continueItems?.contains(it))
+                HomeFragment?.continueItems?.add(it)
+        }
         collection?.id?.let {
             apiService?.startDay(it)
                     ?.subscribeOn(Schedulers.io())

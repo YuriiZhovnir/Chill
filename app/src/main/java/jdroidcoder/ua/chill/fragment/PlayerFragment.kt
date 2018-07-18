@@ -165,12 +165,18 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
 
     @OnClick(R.id.forward)
     fun forward() {
-        player?.currentPosition?.plus(15000)?.let { player?.seekTo(it) }
+        player?.currentPosition?.plus(15000)?.let {
+            player?.seekTo(it)
+            progress?.progress = it
+        }
     }
 
     @OnClick(R.id.rewind)
     fun rewind() {
-        player?.currentPosition?.minus(15000)?.let { player?.seekTo(it) }
+        player?.currentPosition?.minus(15000)?.let {
+            player?.seekTo(it)
+            progress?.progress = it
+        }
     }
 
     @OnClick(R.id.button)
@@ -286,7 +292,8 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                             if (count == collection?.collectionItems?.size) {
                                                 collection?.collectionItems?.sortBy { p -> p.id }
                                                 collection?.let {
-                                                    ChillApp?.offlineCollections?.add(it)
+                                                    if (!ChillApp?.offlineCollections?.contains(it))
+                                                        ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)
                                                 }
                                                 stopLoading()
