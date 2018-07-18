@@ -312,9 +312,9 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
     }
 
     override fun onDestroyView() {
-        player?.pause()
-        if (MainActivity.isNeedPlay)
+        if (player?.isPlaying == true)
             EventBus.getDefault().post(ContinuePlay())
+        player?.pause()
         super.onDestroyView()
     }
 }

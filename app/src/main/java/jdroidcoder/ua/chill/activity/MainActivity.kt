@@ -46,7 +46,6 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
     companion object {
         var player: MediaPlayer? = null
-        var isNeedPlay = false
         var width: Int = 0
         var height: Int = 0
     }
@@ -267,12 +266,10 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         }
         if (player != null && player?.isPlaying == true) {
             button?.setImageResource(R.drawable.ic_play_arrow_black_24dp)
-            isNeedPlay = false
             player?.pause()
         } else {
             player?.duration?.toLong()?.let { setTimer(it) }
             button?.setImageResource(R.drawable.ic_pause_black_24dp)
-            isNeedPlay = true
             player?.start()
         }
     }
