@@ -158,7 +158,7 @@ class MeditationCompletedFragment : BaseFragment() {
                                         override fun onPostExecute(result: CollectionData?) {
                                             super.onPostExecute(result)
                                             if (count == collection?.collectionItems?.size) {
-                                                collection?.collectionItems?.sortBy { p -> p.number }
+                                                collection?.collectionItems?.sortBy { p -> p.id }
                                                 collection?.let {
                                                     ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)

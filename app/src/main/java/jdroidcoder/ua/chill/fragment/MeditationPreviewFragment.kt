@@ -76,10 +76,12 @@ class MeditationPreviewFragment : BaseFragment() {
                     textView?.setBackgroundResource(R.drawable.ic_current_day_border)
                     textView?.setTextColor(Color.parseColor("#000000"))
                 }
-                textView?.text = day?.number?.toString()
+                textView?.text = day?.number?.toString() ?: "1"
                 tempView?.setOnClickListener {
                     if (day.isEnded()) {
-                        currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, day?.number) }
+                        currentDay?.text = resources?.getString(R.string.day_label)?.let {
+                            String.format(it, day?.number ?: 1)
+                        }
                         duration?.text = resources?.getString(R.string.min_label)?.let {
                             String.format(it, day?.audioDuration?.toLong()?.let { it1 ->
                                 TimeUnit.SECONDS.toMinutes(it1)
@@ -104,7 +106,9 @@ class MeditationPreviewFragment : BaseFragment() {
         })
         val currentData = collection?.collectionItems?.first { p -> !p.isEnded() }
         collection?.selectedDay = currentData
-        currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
+        currentDay?.text = resources?.getString(R.string.day_label)?.let {
+            String.format(it, currentData?.number ?: 1)
+        }
         duration?.text = resources?.getString(R.string.min_label)?.let {
             String.format(it, currentData?.audioDuration?.toLong()?.let { it1 ->
                 TimeUnit.SECONDS.toMinutes(it1)
@@ -164,7 +168,7 @@ class MeditationPreviewFragment : BaseFragment() {
                                         override fun onPostExecute(result: CollectionData?) {
                                             super.onPostExecute(result)
                                             if (count == collection?.collectionItems?.size) {
-                                                collection?.collectionItems?.sortBy { p -> p.number }
+                                                collection?.collectionItems?.sortBy { p -> p.id }
                                                 collection?.let {
                                                     ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)

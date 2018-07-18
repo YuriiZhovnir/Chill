@@ -74,7 +74,9 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
         } else {
             author?.visibility = View.GONE
             val currentData = collection?.selectedDay
-            currentDay?.text = resources?.getString(R.string.day_label)?.let { String.format(it, currentData?.number) }
+            currentDay?.text = resources?.getString(R.string.day_label)?.let {
+                String.format(it, currentData?.number ?: 1)
+            }
             titleMeditation?.text = collection?.title
             title?.text = collection?.selectedDay?.title
             music?.visibility = View.VISIBLE
@@ -117,7 +119,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                 }
                             })
                 }
-                collection?.collectionItems?.find { p -> p.number == collection?.selectedDay?.number }?.isEnded = 1
+                collection?.collectionItems?.find { p -> p.id == collection?.selectedDay?.id }?.isEnded = 1
                 val isLast = collection?.collectionItems?.findLast { p -> !p.isEnded() }
                 if (isLast == null) {
                     val fragment = collection?.let { MeditationCompletedFragment.newInstance(it) }
@@ -278,7 +280,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
                                         override fun onPostExecute(result: CollectionData?) {
                                             super.onPostExecute(result)
                                             if (count == collection?.collectionItems?.size) {
-                                                collection?.collectionItems?.sortBy { p -> p.number }
+                                                collection?.collectionItems?.sortBy { p -> p.id }
                                                 collection?.let {
                                                     ChillApp?.offlineCollections?.add(it)
                                                     Utils.saveDownloadedCollection(context, it)
