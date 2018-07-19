@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                     }
                 })
         if (ChillApp.token?.getIsRegistration() == true) {
-            applyBlur()
             val fragment = PreferenceFragment.newInstance()
             supportFragmentManager?.beginTransaction()
                     ?.replace(android.R.id.content, fragment)
@@ -308,10 +307,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         overlayAlloc.copyTo(overlay)
         view.background = BitmapDrawable(resources, overlay)
         rs.destroy()
-    }
-
-    fun removeBlur() {
-        container?.background = null
     }
 
     override fun onDestroy() {

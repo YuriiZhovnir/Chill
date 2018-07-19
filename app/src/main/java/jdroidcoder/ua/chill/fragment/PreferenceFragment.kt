@@ -62,13 +62,4 @@ class PreferenceFragment : BaseFragment() {
                     }
                 })
     }
-
-    override fun onDestroyView() {
-        try {
-            (activity as MainActivity).removeBlur()
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-        super.onDestroyView()
-    }
 }
