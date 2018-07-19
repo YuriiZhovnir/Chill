@@ -76,13 +76,13 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
             music?.visibility = View.GONE
             title.text = collection?.collectionItems?.get(0)?.title
         } else {
-            author?.visibility = View.GONE
+            title?.visibility = View.GONE
             val currentData = collection?.selectedDay
             currentDay?.text = resources?.getString(R.string.day_label)?.let {
                 String.format(it, currentData?.number ?: 1)
             }
             titleMeditation?.text = collection?.title
-            title?.text = collection?.selectedDay?.title
+            author?.text = collection?.selectedDay?.title
             music?.visibility = View.VISIBLE
             val ll = favorite?.layoutParams as RelativeLayout.LayoutParams
             ll.addRule(RelativeLayout.ALIGN_RIGHT, mainButton.id)
@@ -312,9 +312,16 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener {
     }
 
     override fun onDestroyView() {
+        player?.pause()
         if (player?.isPlaying == true)
             EventBus.getDefault().post(ContinuePlay())
-        player?.pause()
+        else if (collection?.isMeditation() == false) {
+            EventBus.getDefault().post(collection?.let {
+                player?.currentPosition?.let { it1 ->
+                    PlayAudio(it, it1)
+                }
+            })
+        }
         super.onDestroyView()
     }
 }
