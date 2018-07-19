@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import butterknife.OnClick
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -95,7 +96,9 @@ class MeditationCompletedFragment : BaseFragment() {
                         EventBus.getDefault().post(UpdateFavorite())
                         if (collection?.isFavorite() == true) {
                             collection?.isFavorite = 0
+                            Toast.makeText(context, "Unfavorite", Toast.LENGTH_SHORT).show()
                         } else {
+                            Toast.makeText(context, "Favorited", Toast.LENGTH_SHORT).show()
                             collection?.isFavorite = 1
                         }
                     }
