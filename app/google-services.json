@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "210348001426",
+    "firebase_url": "https://chill-f044f.firebaseio.com",
+    "project_id": "chill-f044f",
+    "storage_bucket": "chill-f044f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210348001426:android:99b927be1e9649be",
+        "android_client_info": {
+          "package_name": "jdroidcoder.ua.chill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210348001426-5hg6gqthjps3to8leaaloh2c4fg71nrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOsGNDDTRYu2lBkWp50kDfMpcKoPlKRyU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ package jdroidcoder.ua.chill
 import android.app.Application
 import android.graphics.Typeface
 import com.facebook.FacebookSdk
+import com.google.firebase.FirebaseApp
 import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.CollectionItem
 import jdroidcoder.ua.chill.response.Token
@@ -24,5 +25,6 @@ class ChillApp : Application() {
         FacebookSdk.sdkInitialize(this)
         billabongFont = Typeface.createFromAsset(assets, "Billabong.ttf")
         demiFont = Typeface.createFromAsset(assets, "AvenirNextLTPro-Demi.otf")
+        FirebaseApp.initializeApp(this)
     }
 }
