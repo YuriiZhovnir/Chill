@@ -111,6 +111,7 @@ class MeditationPreviewFragment : BaseFragment() {
             }
         })
         val currentData = collection?.collectionItems?.first { p -> !p.isEnded() }
+        currentData?.isEnded = 1
         collection?.selectedDay = currentData
         currentDay?.text = resources?.getString(R.string.day_label)?.let {
             String.format(it, currentData?.number ?: 1)
