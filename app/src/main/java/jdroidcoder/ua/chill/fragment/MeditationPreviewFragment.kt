@@ -197,6 +197,8 @@ class MeditationPreviewFragment : BaseFragment() {
 
     @OnClick(R.id.button)
     fun button() {
+        MainActivity.player?.pause()
+        MainActivity.player?.seekTo(0)
         collection?.let {
             if (!HomeFragment?.continueItems?.contains(it))
                 HomeFragment?.continueItems?.add(it)
