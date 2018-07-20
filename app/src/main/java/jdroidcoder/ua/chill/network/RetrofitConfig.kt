@@ -16,7 +16,7 @@ import java.io.IOException
  */
 class RetrofitConfig {
     companion object {
-        public const val BASE_URL = "http://18.219.200.99/"
+        public const val BASE_URL = "http://18.219.200.99/api/"
     }
 
     val adapter: ApiService

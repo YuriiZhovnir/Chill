@@ -26,7 +26,7 @@ data class CollectionItem(@SerializedName("id") var id: Int?,
     }
 
     fun isFree(): Boolean {
-        return isFree == 0
+        return isFree == 1
     }
 
     fun isFavorite(): Boolean {

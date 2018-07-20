@@ -148,6 +148,18 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         }
     }
 
+    @OnClick(R.id.profile)
+    fun profile() {
+        try {
+            val fragment = ProfileFragment.newInstance()
+            supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.container, fragment)
+                    ?.commit()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
     @OnClick(R.id.playerView)
     fun playerView() {
         if (player?.isPlaying == true) {

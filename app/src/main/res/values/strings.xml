@@ -30,11 +30,17 @@
     <string name="min_label">%d min</string>
     <string name="you_did_it">You did it!</string>
     <string name="mindful_days">Mindful days</string>
+    <string name="mindful_days_lines">Mindful\nDays</string>
     <string name="current_streak">Current Streak</string>
+    <string name="current_streak_lines">Current\nStreak</string>
     <string name="longest_streak">Longest Streak</string>
+    <string name="longest_streak_lines">Longest\nStreak</string>
     <string name="favorite_label">Favorite</string>
     <string name="download_label">Download</string>
     <string name="share_label">Share</string>
     <string name="rate_label">Rate the guidance in this session</string>
     <string name="available_in_offline">Available in offline</string>
+    <string name="stats">STATS</string>
+    <string name="days">Days</string>
+    <string name="session_history">SESSION HISTORY</string>
 </resources>
