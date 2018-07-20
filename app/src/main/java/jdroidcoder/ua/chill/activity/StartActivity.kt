@@ -1,9 +1,14 @@
 package jdroidcoder.ua.chill.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.facebook.CallbackManager
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.fragment.StartFragment
@@ -27,6 +32,18 @@ class StartActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(intent)
+                .addOnSuccessListener(this, OnSuccessListener<PendingDynamicLinkData> { pendingDynamicLinkData ->
+                    var deepLink: Uri? = null
+                    if (pendingDynamicLinkData != null) {
+                        deepLink = pendingDynamicLinkData.link
+                    }else{
+                        println("dsadsa")
+                    }
+                })
+                .addOnFailureListener(this, OnFailureListener { e -> e.printStackTrace() })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

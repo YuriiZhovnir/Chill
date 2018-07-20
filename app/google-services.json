@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "210348001426-in4r8pplfpc1dkmdgbrft05j4cjokh1t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jdroidcoder.ua.chill",
+            "certificate_hash": "098705366eff0c070585f35b31e4d00e4bac178f"
+          }
+        },
+        {
           "client_id": "210348001426-5hg6gqthjps3to8leaaloh2c4fg71nrc.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210348001426-5hg6gqthjps3to8leaaloh2c4fg71nrc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

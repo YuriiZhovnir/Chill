@@ -61,18 +61,6 @@ class RegistrationLoginFragment : BaseFragment() {
             alreadyAccount.visibility = View.GONE
             name.visibility = View.GONE
         }
-//        FirebaseApp.initializeApp(activity)
-//        FirebaseDynamicLinks.getInstance()
-//                .getDynamicLink(activity.intent)
-//                .addOnSuccessListener(activity, OnSuccessListener<PendingDynamicLinkData> { pendingDynamicLinkData ->
-//                    var deepLink: Uri? = null
-//                    if (pendingDynamicLinkData != null) {
-//                        deepLink = pendingDynamicLinkData.link
-//                    }else{
-//                        println("dsadsa")
-//                    }
-//                })
-//                .addOnFailureListener(activity, OnFailureListener { e -> e.printStackTrace() })
     }
 
     @OnClick(R.id.login)
@@ -92,23 +80,24 @@ class RegistrationLoginFragment : BaseFragment() {
 //                    .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
 //                    .setIosParameters(DynamicLink.IosParameters.Builder("chillapp.page.link").build())
 //                    .buildDynamicLink()
-//
+
 //            val dynamicLinkUri = dynamicLink.uri
-//            val shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-//                    .setLongLink(dynamicLinkUri)
-//                    .buildShortDynamicLink()
-//                    .addOnCompleteListener(activity, object : OnCompleteListener<ShortDynamicLink> {
-//                        override fun onComplete(task: Task<ShortDynamicLink>) {
-//                            if (task.isSuccessful) {
-//                                // Short link created
-//                                val shortLink = task.result.shortLink
-//                                val flowchartLink = task.result.previewLink
-//                                println("dsa")
-//                            } else {
-//                               task?.exception?.printStackTrace()
-//                            }
-//                        }
-//                    })
+            val shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse("http://chill.com"))
+                    .setDynamicLinkDomain("chillapp.page.link")
+                    .buildShortDynamicLink()
+                    .addOnCompleteListener(activity, object : OnCompleteListener<ShortDynamicLink> {
+                        override fun onComplete(task: Task<ShortDynamicLink>) {
+                            if (task.isSuccessful) {
+                                // Short link created
+                                val shortLink = task.result.shortLink
+                                val flowchartLink = task.result.previewLink
+                                println("dsa")
+                            } else {
+                               task?.exception?.printStackTrace()
+                            }
+                        }
+                    })
         }
     }
 
