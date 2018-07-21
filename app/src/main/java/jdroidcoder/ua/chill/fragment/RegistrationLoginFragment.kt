@@ -1,7 +1,6 @@
 package jdroidcoder.ua.chill.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -17,15 +16,6 @@ import jdroidcoder.ua.chill.util.Utils
 import kotlinx.android.synthetic.main.fragment_registration_login.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseApp
-import com.google.firebase.dynamiclinks.ShortDynamicLink
 
 /**
  * Created by jdroidcoder on 09.07.2018.

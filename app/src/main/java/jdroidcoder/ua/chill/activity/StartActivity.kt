@@ -5,10 +5,7 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.facebook.CallbackManager
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.fragment.ForgotPasswordFragment
@@ -48,7 +45,7 @@ class StartActivity : AppCompatActivity() {
                         }
                     }
                 })
-                .addOnFailureListener(this, OnFailureListener { e -> e.printStackTrace() })
+                .addOnFailureListener(this, { e -> e.printStackTrace() })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
