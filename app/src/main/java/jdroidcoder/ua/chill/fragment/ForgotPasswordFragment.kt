@@ -38,6 +38,12 @@ class ForgotPasswordFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        appName.typeface = ChillApp.billabongFont
+        preTerms.typeface = ChillApp.demiFont
+        terms.typeface = ChillApp.demiFont
+        alreadyAccount.typeface = ChillApp.demiFont
+        login.typeface = ChillApp.demiFont
+        continueButton.typeface = ChillApp.demiFont
         token = arguments?.getString(UPDATE_PASSWORD_TOKEN, "")
         if (!token.isNullOrEmpty()) {
             password?.visibility = View.VISIBLE
@@ -90,5 +96,10 @@ class ForgotPasswordFragment : BaseFragment() {
                         }
                     })
         }
+    }
+
+    @OnClick(R.id.login)
+    fun login() {
+        activity?.supportFragmentManager?.popBackStack()
     }
 }

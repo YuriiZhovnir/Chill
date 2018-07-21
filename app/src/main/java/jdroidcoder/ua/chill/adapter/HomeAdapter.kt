@@ -12,6 +12,7 @@ import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.event.PlayAudio
 import jdroidcoder.ua.chill.fragment.MeditationPreviewFragment
+import jdroidcoder.ua.chill.fragment.SubscribeFragment
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
@@ -49,26 +50,39 @@ class HomeAdapter(var items: ArrayList<CollectionItem>) : RecyclerView.Adapter<H
         holder.title.typeface = ChillApp.demiFont
         holder.title.text = item.title
         holder.description.text = item.coverText
+        if (item.isFree()) {
+            holder.lock.visibility = View.GONE
+        } else {
+            holder.lock.visibility = View.VISIBLE
+        }
         holder.view.setOnClickListener {
-            item.id?.let { it1 ->
-                val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
-                if (offline == null) {
-                    RetrofitConfig().adapter.getCollection(it1)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .unsubscribeOn(Schedulers.io())
-                            .subscribe(object : RetrofitSubscriber<CollectionItem>() {
-                                override fun onNext(response: CollectionItem) {
-                                    show(response)
-                                }
+            if (item?.isFree() || ChillApp.isSubscribed) {
+                item.id?.let { it1 ->
+                    val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
+                    if (offline == null) {
+                        RetrofitConfig().adapter.getCollection(it1)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .unsubscribeOn(Schedulers.io())
+                                .subscribe(object : RetrofitSubscriber<CollectionItem>() {
+                                    override fun onNext(response: CollectionItem) {
+                                        show(response)
+                                    }
 
-                                override fun onError(e: Throwable) {
-                                    e.printStackTrace()
-                                }
-                            })
-                } else {
-                    show(offline)
+                                    override fun onError(e: Throwable) {
+                                        e.printStackTrace()
+                                    }
+                                })
+                    } else {
+                        show(offline)
+                    }
                 }
+            }else{
+                val fragment = SubscribeFragment.newInstance()
+                (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                        ?.add(android.R.id.content, fragment)
+                        ?.addToBackStack(fragment?.tag)
+                        ?.commit()
             }
         }
     }
@@ -90,5 +104,6 @@ class HomeAdapter(var items: ArrayList<CollectionItem>) : RecyclerView.Adapter<H
         var image = itemView.image
         var title = itemView.title
         var description = itemView.description
+        var lock = itemView.lock
     }
 }

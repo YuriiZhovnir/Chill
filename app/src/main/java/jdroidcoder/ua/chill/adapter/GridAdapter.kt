@@ -14,6 +14,7 @@ import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.event.PlayAudio
 import jdroidcoder.ua.chill.fragment.MeditationPreviewFragment
+import jdroidcoder.ua.chill.fragment.SubscribeFragment
 import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.CollectionItem
@@ -64,25 +65,33 @@ class GridAdapter(var context: Context, private var collections: ArrayList<Colle
             view.findViewById<TextView>(R.id.newLabel).visibility = View.GONE
         }
         view.setOnClickListener {
-            collection.id?.let { it1 ->
-                val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
-                if (offline == null) {
-                    RetrofitConfig().adapter.getCollection(it1)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .unsubscribeOn(Schedulers.io())
-                            .subscribe(object : RetrofitSubscriber<CollectionItem>() {
-                                override fun onNext(response: CollectionItem) {
-                                    show(response)
-                                }
+            if (collection?.isFree() || ChillApp.isSubscribed) {
+                collection.id?.let { it1 ->
+                    val offline = ChillApp?.offlineCollections?.find { p -> p.id == it1 }
+                    if (offline == null) {
+                        RetrofitConfig().adapter.getCollection(it1)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .unsubscribeOn(Schedulers.io())
+                                .subscribe(object : RetrofitSubscriber<CollectionItem>() {
+                                    override fun onNext(response: CollectionItem) {
+                                        show(response)
+                                    }
 
-                                override fun onError(e: Throwable) {
-                                    e.printStackTrace()
-                                }
-                            })
-                } else {
-                    show(offline)
+                                    override fun onError(e: Throwable) {
+                                        e.printStackTrace()
+                                    }
+                                })
+                    } else {
+                        show(offline)
+                    }
                 }
+            } else {
+                val fragment = SubscribeFragment.newInstance()
+                (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                        ?.add(android.R.id.content, fragment)
+                        ?.addToBackStack(fragment?.tag)
+                        ?.commit()
             }
         }
         return view

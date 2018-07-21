@@ -90,6 +90,16 @@ interface ApiService {
     @FormUrlEncoded
     fun updatePassword(@Field("token") token: String?,
                        @Field("password") password: String?,
-                       @Field("password_confirm") confirmPassword: String?,
+                       @Field("password_confirmation") confirmPassword: String?,
                        @Field("device_id") deviceId: String?): Observable<Token>
+
+    @POST("user/subscription/update")
+    @FormUrlEncoded
+    fun subscriptionUpdate(@Field("is_subscribed") isAutoRenewing: Boolean,
+                           @Field("subscription_order_id") orderId: String,
+                           @Field("purchase_id") purchaseId: String,
+                           @Field("subscription_purchased_at") time: Long): Observable<Object>
+
+    @GET("user/subscription")
+    fun getSubscription(): Observable<Token>
 }

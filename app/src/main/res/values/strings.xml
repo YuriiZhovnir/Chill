@@ -46,4 +46,14 @@
     <string name="days">Days</string>
     <string name="session_history">SESSION HISTORY</string>
     <string name="check_your_email">Please, check your email</string>
+    <string name="stress_less">Stress less, relax more</string>
+    <string name="join_to_our_community">Join Our Community</string>
+    <string name="included_1">Access to all meditations</string>
+    <string name="included_2">Stories, music, and mindfulness</string>
+    <string name="included_3">Stress less, sleep better</string>
+    <string name="try_completely_free">Try Completely Free</string>
+    <string name="cancel_anytime">Cancel anytime</string>
+    <string name="subscribe_description">7 days FREE trial, then only $59.99/yr ($4.99/mo)</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="text">Chill subscription automatically renews unless auto-renew is turned off at least 24 hours before current period ends. Payment will be charged to your iTunes Account. Subscriptions may be managed by the user and auto-renewal may be turned off in Account Settings.</string>
 </resources>

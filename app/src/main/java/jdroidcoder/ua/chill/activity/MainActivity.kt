@@ -18,8 +18,10 @@ import android.os.CountDownTimer
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.android.billingclient.api.*
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -31,28 +33,56 @@ import jdroidcoder.ua.chill.network.RetrofitConfig
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
 import jdroidcoder.ua.chill.response.Category
 import jdroidcoder.ua.chill.response.CollectionItem
+import jdroidcoder.ua.chill.response.Token
 import jdroidcoder.ua.chill.util.Utils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**
  * Created by jdroidcoder on 09.07.2018.
  */
-class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
+class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener, PurchasesUpdatedListener {
+
     companion object {
         var player: MediaPlayer? = null
         var width: Int = 0
         var height: Int = 0
     }
 
+    override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
+        purchases?.let {
+            for (sub in it) {
+                try {
+                    val date = Date()
+                    date.time = purchases?.get(0)?.purchaseTime!!
+                    ChillApp.isSubscribed = purchases?.get(0)?.isAutoRenewing
+                    if (purchases?.get(0)?.isAutoRenewing) {
+                        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
+                        if (supportFragmentManager?.fragments?.last() is SubscribeFragment) {
+                            supportFragmentManager?.beginTransaction()
+                                    ?.remove(supportFragmentManager?.fragments?.last())
+                                    ?.commit()
+                        }
+                    }
+                    undateSubscribe(purchases?.get(0)?.isAutoRenewing, purchases?.get(0).orderId,
+                            purchases?.get(0).purchaseTime, purchases?.get(0).sku)
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
+        }
+    }
+
     private var apiService = RetrofitConfig().adapter
     private var timer: CountDownTimer? = null
     private var collection: CollectionItem? = null
+     var billingClient: BillingClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +93,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         width = dm.widthPixels
         height = dm.heightPixels
         ButterKnife.bind(this)
+        billing()
+        getSubscription()
         apiService.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -82,7 +114,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                     ?.replace(android.R.id.content, fragment)
                     ?.addToBackStack(fragment.tag)
                     ?.commit()
-
         }
         audioName?.typeface = ChillApp?.demiFont
         home()
@@ -94,6 +125,74 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                 ChillApp.offlineCollections.add(gson.fromJson(it, CollectionItem::class.java))
             }
         }
+    }
+
+    private fun getSubscription() {
+        apiService.getSubscription()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(object : RetrofitSubscriber<Token>() {
+                    override fun onNext(response: Token) {
+                        ChillApp.isSubscribed = response?.getIsSubscribed()
+                    }
+                })
+    }
+
+    private fun billing() {
+        billingClient = BillingClient.newBuilder(this).setListener(this).build()
+        billingClient?.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(@BillingClient.BillingResponse billingResponseCode: Int) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    checkSubscriptions()
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                println("disconnect")
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkSubscriptions()
+    }
+
+    private fun checkSubscriptions() {
+        val skuList = java.util.ArrayList<String>()
+        skuList.add("test_1")
+        skuList.add("7_days_free_59.99_year")
+        val params = SkuDetailsParams.newBuilder()
+        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
+        val result = billingClient?.queryPurchases(BillingClient.SkuType.SUBS)
+        val purchases = result?.purchasesList
+        purchases?.let {
+            for (sub in it) {
+                try {
+                    val date = Date()
+                    date.time = purchases?.get(0)?.purchaseTime!!
+                    purchases?.get(0)?.isAutoRenewing?.let { it1 ->
+                        undateSubscribe(it1, purchases?.get(0).orderId,
+                                purchases?.get(0).purchaseTime, purchases?.get(0).sku)
+                    }
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun undateSubscribe(isAutoRenewing: Boolean, orderId: String, time: Long, id: String) {
+        apiService.subscriptionUpdate(isAutoRenewing, orderId, id, time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(object : RetrofitSubscriber<Object>() {
+                    override fun onNext(response: Object) {
+                        println(response)
+                    }
+                })
     }
 
     override fun onBackPressed() {

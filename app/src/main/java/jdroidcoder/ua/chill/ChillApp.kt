@@ -18,6 +18,7 @@ class ChillApp : Application() {
         var token: Token? = null
         var category: ArrayList<Category>? = null
         var offlineCollections = ArrayList<CollectionItem>()
+        var isSubscribed = false
     }
 
     override fun onCreate() {
