@@ -102,4 +102,7 @@ interface ApiService {
 
     @GET("user/subscription")
     fun getSubscription(): Observable<Token>
+
+    @POST("auth/logout")
+    fun logout(): Observable<Object>
 }

@@ -56,4 +56,10 @@
     <string name="subscribe_description">7 days FREE trial, then only $59.99/yr ($4.99/mo)</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="text">Chill subscription automatically renews unless auto-renew is turned off at least 24 hours before current period ends. Payment will be charged to your iTunes Account. Subscriptions may be managed by the user and auto-renewal may be turned off in Account Settings.</string>
+    <string name="settings">Settings</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="reminders">Reminders</string>
+    <string name="rate">Rate Chill</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="logout">Logout</string>
 </resources>

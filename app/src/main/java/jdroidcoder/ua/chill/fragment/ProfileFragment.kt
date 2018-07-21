@@ -132,6 +132,15 @@ class ProfileFragment : BaseFragment() {
         calender?.requestLayout()
     }
 
+    @OnClick(R.id.setting)
+    fun setting() {
+        val fragment = SettingFragment.newInstance()
+        activity?.supportFragmentManager?.beginTransaction()
+                ?.add(android.R.id.content, fragment)
+                ?.addToBackStack(fragment?.tag)
+                ?.commit()
+    }
+
     @OnClick(R.id.previousMonth)
     fun previousMonth() {
         calender?.travelTo(DateData(year, month - 1, 1))
