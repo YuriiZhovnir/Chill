@@ -41,9 +41,10 @@ class StartActivity : AppCompatActivity() {
                     if (pendingDynamicLinkData != null) {
                         deepLink = pendingDynamicLinkData.link
                         deepLink?.getQueryParameter("token")
-                        println("token " + deepLink?.getQueryParameter("token"))
-                        if(this?.supportFragmentManager?.fragments?.last() !is ForgotPasswordFragment){
-                            supportFragmentManager?.beginTransaction()?.replace(R.id.container, ForgotPasswordFragment.newInstance())?.commit()
+                        if (this?.supportFragmentManager?.fragments?.last() !is ForgotPasswordFragment) {
+                            supportFragmentManager?.beginTransaction()
+                                    ?.replace(R.id.container, ForgotPasswordFragment.newInstance(deepLink?.getQueryParameter("token")))
+                                    ?.commit()
                         }
                     }
                 })
