@@ -86,7 +86,7 @@ interface ApiService {
     @FormUrlEncoded
     fun forgotPassword(@Field("email") email: String?): Observable<Object>
 
-    @POST("auth/email/reset-password")
+    @POST("auth/email/password-reset-store")
     @FormUrlEncoded
     fun updatePassword(@Field("token") token: String?,
                        @Field("password") password: String?,

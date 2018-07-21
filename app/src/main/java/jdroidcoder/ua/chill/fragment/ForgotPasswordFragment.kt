@@ -74,8 +74,8 @@ class ForgotPasswordFragment : BaseFragment() {
                         }
                     })
         } else {
-            apiService?.updatePassword(token, password?.text?.toString(),
-                    confirmPassword?.text?.toString(),
+            apiService?.updatePassword(token, Utils.getSignature(Utils.md5(password.text.toString())),
+                    Utils.getSignature(Utils.md5(confirmPassword.text.toString())),
                     Settings.Secure.getString(activity?.contentResolver, Settings.Secure.ANDROID_ID))
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
