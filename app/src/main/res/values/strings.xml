@@ -11,6 +11,8 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm new password</string>
     <string name="forgot_password">Forgot your password?</string>
     <string name="facebook_app_id">217705585521766</string>
     <string name="preference_title">What brings you to chill?\nSelect your main goals</string>
@@ -43,4 +45,5 @@
     <string name="stats">STATS</string>
     <string name="days">Days</string>
     <string name="session_history">SESSION HISTORY</string>
+    <string name="check_your_email">Please, check your email</string>
 </resources>

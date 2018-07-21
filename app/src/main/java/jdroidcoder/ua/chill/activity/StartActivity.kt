@@ -11,6 +11,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
+import jdroidcoder.ua.chill.fragment.ForgotPasswordFragment
 import jdroidcoder.ua.chill.fragment.StartFragment
 import jdroidcoder.ua.chill.response.Token
 import jdroidcoder.ua.chill.util.Utils
@@ -35,12 +36,15 @@ class StartActivity : AppCompatActivity() {
 
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(intent)
-                .addOnSuccessListener(this, OnSuccessListener<PendingDynamicLinkData> { pendingDynamicLinkData ->
+                .addOnSuccessListener(this, { pendingDynamicLinkData ->
                     var deepLink: Uri? = null
                     if (pendingDynamicLinkData != null) {
                         deepLink = pendingDynamicLinkData.link
-                    }else{
-                        println("dsadsa")
+                        deepLink?.getQueryParameter("token")
+                        println("token " + deepLink?.getQueryParameter("token"))
+                        if(this?.supportFragmentManager?.fragments?.last() !is ForgotPasswordFragment){
+                            supportFragmentManager?.beginTransaction()?.replace(R.id.container, ForgotPasswordFragment.newInstance())?.commit()
+                        }
                     }
                 })
                 .addOnFailureListener(this, OnFailureListener { e -> e.printStackTrace() })

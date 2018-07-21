@@ -23,6 +23,7 @@ abstract class BaseFragment : Fragment() {
         const val RESOURCE_KEY = "resource"
         const val COLLECTION_KEY = "collection"
         const val IS_MEDITATION_KEY = "is_meditation"
+        const val UPDATE_PASSWORD_TOKEN = "update_password_token"
 
         const val RESOURCE_CATEGORY = "category"
         const val RESOURCE_SUBCATEGORY = "subcategory"

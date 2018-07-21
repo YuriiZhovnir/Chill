@@ -81,4 +81,15 @@ interface ApiService {
 
     @GET("user/history-of-month")
     fun getHistory(@Query("date_month") dateMonth: String): Observable<ArrayList<Statistic>>
+
+    @POST("auth/email/forgot-password")
+    @FormUrlEncoded
+    fun forgotPassword(@Field("email") email: String?): Observable<Object>
+
+    @POST("auth/email/reset-password")
+    @FormUrlEncoded
+    fun updatePassword(@Field("token") token: String?,
+                       @Field("password") password: String?,
+                       @Field("password_confirm") confirmPassword: String?,
+                       @Field("device_id") deviceId: String?): Observable<Token>
 }

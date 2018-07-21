@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "210348001426-d96pucklnbi19b2120pb065p0tnff5ap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jdroidcoder.ua.chill",
+            "certificate_hash": "a3b2f554cfa27b856f71d24c51a2c153a56432d1"
+          }
+        },
+        {
           "client_id": "210348001426-5hg6gqthjps3to8leaaloh2c4fg71nrc.apps.googleusercontent.com",
           "client_type": 3
         }

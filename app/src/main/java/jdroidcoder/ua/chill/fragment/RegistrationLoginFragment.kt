@@ -65,40 +65,17 @@ class RegistrationLoginFragment : BaseFragment() {
 
     @OnClick(R.id.login)
     fun login() {
-        if (!isLogin) {
-            val fragment = RegistrationLoginFragment.newInstance(true)
-            activity?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.container, fragment)
-                    ?.addToBackStack(fragment.tag)
-                    ?.commit()
-        } else {
-//            "https://chillapp.page.link"
-//            val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-//                    .setLink(Uri.parse("http://chill.com"))
-//                    .setDynamicLinkDomain("chillapp.page.link")
-//                    .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
-//                    .setIosParameters(DynamicLink.IosParameters.Builder("chillapp.page.link").build())
-//                    .buildDynamicLink()
+        val fragment = if (!isLogin) {
+            RegistrationLoginFragment.newInstance(true)
 
-//            val dynamicLinkUri = dynamicLink.uri
-            val shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setLink(Uri.parse("http://chill.com"))
-                    .setDynamicLinkDomain("chillapp.page.link")
-                    .buildShortDynamicLink()
-                    .addOnCompleteListener(activity, object : OnCompleteListener<ShortDynamicLink> {
-                        override fun onComplete(task: Task<ShortDynamicLink>) {
-                            if (task.isSuccessful) {
-                                // Short link created
-                                val shortLink = task.result.shortLink
-                                val flowchartLink = task.result.previewLink
-                                println("dsa")
-                            } else {
-                               task?.exception?.printStackTrace()
-                            }
-                        }
-                    })
+        } else {
+            ForgotPasswordFragment.newInstance()
         }
+        activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.container, fragment)
+                ?.addToBackStack(fragment.tag)
+                ?.commit()
     }
 
     @OnClick(R.id.continueButton)
