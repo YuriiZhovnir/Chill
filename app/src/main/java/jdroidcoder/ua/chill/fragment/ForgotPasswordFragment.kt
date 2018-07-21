@@ -48,6 +48,7 @@ class ForgotPasswordFragment : BaseFragment() {
         if (!token.isNullOrEmpty()) {
             password?.visibility = View.VISIBLE
             confirmPassword?.visibility = View.VISIBLE
+            email?.visibility = View.GONE
         }
     }
 
