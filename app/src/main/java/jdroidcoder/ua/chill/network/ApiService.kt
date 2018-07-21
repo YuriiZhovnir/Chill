@@ -80,7 +80,7 @@ interface ApiService {
     fun download(@Url fileUrl: String): Observable<ResponseBody>
 
     @GET("user/history-of-month")
-    fun getHistory(@Query("date_month") dateMonth: String): Observable<ArrayList<Statistic>>
+    fun getHistory(@Query("date_month") dateMonth: String): Observable<Profile>
 
     @POST("auth/email/forgot-password")
     @FormUrlEncoded

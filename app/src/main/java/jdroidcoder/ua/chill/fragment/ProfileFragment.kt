@@ -9,6 +9,7 @@ import butterknife.OnClick
 import jdroidcoder.ua.chill.ChillApp
 import jdroidcoder.ua.chill.R
 import jdroidcoder.ua.chill.network.RetrofitSubscriber
+import jdroidcoder.ua.chill.response.Profile
 import jdroidcoder.ua.chill.response.Statistic
 import kotlinx.android.synthetic.main.fragment_profile.*
 import rx.android.schedulers.AndroidSchedulers
@@ -70,11 +71,20 @@ class ProfileFragment : BaseFragment() {
         mindful?.text = day?.mindfulDays?.toString()
         longest?.text = day?.longestStreak?.toString()
         sessions?.removeAllViews()
-        for (session in day?.sessionArray) {
-            val view = LayoutInflater.from(context).inflate(R.layout.session_item, null)
-            view?.findViewById<TextView>(R.id.label)?.text = session?.title + "\n" +
-                    String.format(resources.getString(R.string.day_label, session.number))
-            sessions.addView(view)
+        if (day?.sessionArray?.isNotEmpty() == true) {
+            day?.sessionArray?.let {
+                for (session in it) {
+                    val view = LayoutInflater.from(context).inflate(R.layout.session_item, null)
+                    view?.findViewById<TextView>(R.id.label)?.text = session?.title + "\n" +
+                            String.format(resources.getString(R.string.day_label, session.number))
+                    sessions.addView(view)
+                }
+            }
+            sessions?.visibility = View.VISIBLE
+            labelSession?.visibility = View.VISIBLE
+        } else {
+            sessions?.visibility = View.GONE
+            labelSession?.visibility = View.GONE
         }
         stopLoading()
     }
@@ -85,9 +95,13 @@ class ProfileFragment : BaseFragment() {
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.unsubscribeOn(Schedulers.io())
                 ?.doOnSubscribe(this::startLoading)
-                ?.subscribe(object : RetrofitSubscriber<ArrayList<Statistic>>() {
-                    override fun onNext(response: ArrayList<Statistic>) {
-                        initDays(response)
+                ?.subscribe(object : RetrofitSubscriber<Profile>() {
+                    override fun onNext(response: Profile) {
+                        response?.history?.add(Statistic(response?.statistics?.currentStreak,
+                                response?.statistics?.mindfulDays, response?.statistics?.longestStreak,
+                                SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss",
+                                        Locale.getDefault()).format(Calendar.getInstance().time)))
+                        initDays(response.history)
                     }
 
                     override fun onError(e: Throwable) {

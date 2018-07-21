@@ -9,6 +9,6 @@ import sun.bob.mcalendarview.vo.DateData
 data class Statistic(@SerializedName("current_streak") var currentStreak: Int?,
                      @SerializedName("mindful_days") var mindfulDays: Int?,
                      @SerializedName("longest_streak") var longestStreak: Int?,
-                     @SerializedName("created_at") var createdAt: String,
-                     @SerializedName("session_array")var sessionArray:ArrayList<CollectionData>,
-                     var dateData: DateData)
+                     @SerializedName("created_at") var createdAt: String?,
+                     @SerializedName("session_array") var sessionArray: ArrayList<CollectionData>? = ArrayList(),
+                     var dateData: DateData? = DateData(0, 0, 0))

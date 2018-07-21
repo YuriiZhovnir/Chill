@@ -314,10 +314,10 @@
                 <com.github.mmin18.widget.RealtimeBlurView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/label_session"
-                    android:layout_alignEnd="@id/label_session"
-                    android:layout_alignStart="@id/label_session"
-                    android:layout_alignTop="@id/label_session"
+                    android:layout_alignBottom="@id/labelSession"
+                    android:layout_alignEnd="@id/labelSession"
+                    android:layout_alignStart="@id/labelSession"
+                    android:layout_alignTop="@id/labelSession"
                     android:layout_centerHorizontal="true"
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
@@ -325,7 +325,7 @@
                     app:realtimeOverlayColor="#55333333" />
 
                 <TextView
-                    android:id="@+id/label_session"
+                    android:id="@+id/labelSession"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
