@@ -54,7 +54,7 @@
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:singleLine="true"
-            android:textColor="#C3C3C3"
+            android:textColor="@android:color/white"
             android:textColorHint="#C3C3C3"
             android:textSize="16sp" />
 
@@ -71,7 +71,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:singleLine="true"
-            android:textColor="#C3C3C3"
+            android:textColor="@android:color/white"
             android:textColorHint="#C3C3C3"
             android:textSize="16sp" />
 
@@ -88,7 +88,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:singleLine="true"
-            android:textColor="#C3C3C3"
+            android:textColor="@android:color/white"
             android:textColorHint="#C3C3C3"
             android:textSize="16sp" />
 
