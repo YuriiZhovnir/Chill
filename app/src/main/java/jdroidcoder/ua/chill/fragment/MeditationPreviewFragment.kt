@@ -25,6 +25,7 @@ import android.widget.FrameLayout
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatActivity
 import com.squareup.picasso.NetworkPolicy
 import jdroidcoder.ua.chill.activity.MainActivity
 import jdroidcoder.ua.chill.response.CollectionData
@@ -84,7 +85,7 @@ class MeditationPreviewFragment : BaseFragment() {
                 }
                 textView?.text = day?.number?.toString() ?: "1"
                 tempView?.setOnClickListener {
-                    if (day.isEnded()) {
+                    if (day?.isFree()) {
                         currentDay?.text = resources?.getString(R.string.day_label)?.let {
                             String.format(it, day?.number ?: 1)
                         }
@@ -94,6 +95,12 @@ class MeditationPreviewFragment : BaseFragment() {
                             })
                         }
                         collection?.selectedDay = day
+                    } else {
+                        val fragment = SubscribeFragment.newInstance()
+                        (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                                ?.add(android.R.id.content, fragment)
+                                ?.addToBackStack(fragment?.tag)
+                                ?.commit()
                     }
                 }
                 days.addView(tempView)
@@ -198,32 +205,40 @@ class MeditationPreviewFragment : BaseFragment() {
 
     @OnClick(R.id.button)
     fun button() {
-        MainActivity.player?.pause()
-        MainActivity.player?.seekTo(0)
-        collection?.let {
-            if (!HomeFragment?.continueItems?.contains(it))
-                HomeFragment?.continueItems?.add(it)
-        }
-        collection?.id?.let {
-            apiService?.startDay(it)
-                    ?.subscribeOn(Schedulers.io())
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.unsubscribeOn(Schedulers.io())
-                    ?.subscribe(object : RetrofitSubscriber<Object>() {
-                        override fun onNext(response: Object) {
-                        }
+        if (collection?.selectedDay?.isFree() == true) {
+            MainActivity.player?.pause()
+            MainActivity.player?.seekTo(0)
+            collection?.let {
+                if (!HomeFragment?.continueItems?.contains(it))
+                    HomeFragment?.continueItems?.add(it)
+            }
+            collection?.id?.let {
+                apiService?.startDay(it)
+                        ?.subscribeOn(Schedulers.io())
+                        ?.observeOn(AndroidSchedulers.mainThread())
+                        ?.unsubscribeOn(Schedulers.io())
+                        ?.subscribe(object : RetrofitSubscriber<Object>() {
+                            override fun onNext(response: Object) {
+                            }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    })
+                            override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                            }
+                        })
+            }
+            close()
+            val fragment = collection?.let { PlayerFragment.newInstance(it) }
+            activity?.supportFragmentManager?.beginTransaction()
+                    ?.add(android.R.id.content, fragment)
+                    ?.addToBackStack(fragment?.tag)
+                    ?.commit()
+        } else {
+            val fragment = SubscribeFragment.newInstance()
+            (context as AppCompatActivity)?.supportFragmentManager?.beginTransaction()
+                    ?.add(android.R.id.content, fragment)
+                    ?.addToBackStack(fragment?.tag)
+                    ?.commit()
         }
-        close()
-        val fragment = collection?.let { PlayerFragment.newInstance(it) }
-        activity?.supportFragmentManager?.beginTransaction()
-                ?.add(android.R.id.content, fragment)
-                ?.addToBackStack(fragment?.tag)
-                ?.commit()
     }
 
     @OnClick(R.id.close)
