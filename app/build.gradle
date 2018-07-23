@@ -16,8 +16,8 @@ android {
         applicationId "jdroidcoder.ua.chill"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
         multiDexEnabled true
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true

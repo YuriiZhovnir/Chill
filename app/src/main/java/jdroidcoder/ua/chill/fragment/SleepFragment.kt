@@ -33,12 +33,12 @@ class SleepFragment : BaseFragment() {
         category = arguments?.getSerializable(CATEGORY_KEY) as Category?
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
         category?.id?.let {
-            CollectionFragment.newInstance(it, RESOURCE_CATEGORY)
+            CollectionFragment.newInstance(it, RESOURCE_CATEGORY, true)
         }?.let {
             viewPagerAdapter.addFragment(it, resources.getString(R.string.all_label))
         }
         category?.id?.let {
-            CollectionFragment.newInstance(it, RESOURCE_FAVORITE)
+            CollectionFragment.newInstance(it, RESOURCE_FAVORITE, true)
         }?.let {
             viewPagerAdapter.addFragment(it, "")
         }
@@ -46,7 +46,7 @@ class SleepFragment : BaseFragment() {
             for (subcategory in it) {
                 subcategory?.let { it1 ->
                     it1?.id?.let { it2 ->
-                        CollectionFragment.newInstance(it2, RESOURCE_SUBCATEGORY)
+                        CollectionFragment.newInstance(it2, RESOURCE_SUBCATEGORY, true)
                     }
                 }?.let { it2 ->
                     subcategory?.name?.let { it1 ->
